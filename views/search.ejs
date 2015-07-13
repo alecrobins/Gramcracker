@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= title %></title>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			var submitSearch = function(){
+				$.ajax({
+				  type: "GET",
+				  url: "/api/searchYelp",
+				  data: {
+				  		"name": $("input[name='term'").val(),
+				  		"limit": $("input[name='limit'").val(),
+				  		"sort": $("input[name='sort'").val(),
+				  		"category_filter": $("input[name='category_filter'").val(),
+				  		"radius_filter": $("input[name='radius_filter'").val(),
+				  		"location": $("input[name='location'").val(),
+				  		"latitude": $("input[name='latitude'").val(),
+				  		"longitude": $("input[name='longitude'").val(),
+
+				  },
+				  success: function(data){
+						console.log("RECIEVED DATA");
+						console.log(data);
+					},
+				  dataType: "json"
+				});
+			};
+
+			// $(".submitForm").on("click", submitSearch);
+
+		});	
+	</script>
+
+</head>
+<body>
+	<h1><%= title %></h1>
+	<p>Welcome to <%= title %></p>
+
+	<form action="/api/searchYelp" method="POST" >
+		<label for="term">Term</label>
+		<input type="text" name="term" />
+
+		<label for="limit">Limit</label>
+		<input type="text" name="limit" />
+		
+		<label for="sort">Sort</label>
+		<label for="sort"> 0=Best matched (default), 1=Distance, 2=Highest Rated.</label>
+		<input type="text" name="sort" />
+		
+		<label for="category_filter">Category Filter</label>
+		<input type="text" name="category_filter" />
+		
+		<label for="radius_filter">Radius Filter</label>
+		<input type="text" name="radius_filter" />
+		
+		<label for="location">Location</label>
+		<input type="text" name="location" />
+		
+		<label for="latitude">Latitude</label>
+		<input type="text" name="latitude" />
+		
+		<label for="longitude">Longitude</label>
+		<input type="text" name="longitude" />
+		
+		<input type="submit" class="submitForm" />
+
+	</form>
+
+</body>
+</html>

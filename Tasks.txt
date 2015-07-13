@@ -1,0 +1,8 @@
+Tasks:
+
+	1. Pull data from yelp
+	2. Send off a call for each return resturant to instagram
+	3. Asynchronously handle data
+	4. Bind information 
+	5. Test
+	6. Client side . . . 
