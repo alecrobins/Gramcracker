@@ -9,6 +9,13 @@ var async = require('async');
 var config = require('../config');
 var http = require('http');
 
+var insta = require('instagram-node').instagram();
+
+insta.use({
+  client_id: config.instagram.clientID,
+  client_secret: config.instagram.clientSecret
+});
+
 /* Function for yelp call
  * ------------------------
  * set_parameters: object with params to search
@@ -92,26 +99,34 @@ module.exports.home = function(req, res, next){
 
 /* GET home page. */
 module.exports.search = function(req, res, next) {
-	var places = [];
-
 	async.series([
 			function(cb){
+				
+				var searchData = [];
+
+				// 1: get all resturant information from yelp
 				request_yelp(searchToObj(req.body), function(error, res, body){
 					console.log("SUCCEES");
 					var data = JSON.parse(body);
-
+					var asyncCallBacks = [];
 
 					for(var i in data.businesses){
 						var place = data.businesses[i];
-						console.log(place);
-						var newPlace = {
-							"coordinate": place.location.coordinate,
-							"name": place.name
-						}
+						var placeCoords = place.location.coordinate;
 
+						// create the new function that will be called in parallel
+						var newPlaceFunc = createInstagramCallback(place.id,
+								 place.name, placeCoords.latitude, placeCoords.longitude);
+
+						asyncCallBacks.push(newPlaceFunc);
 					}
 
-					cb(null, newBody);
+					// search all the instagram photos in parallel
+					async.parallel(asyncCallBacks, function(err, results){
+						console.log("ALL PARALLEL RESULTS WERE RETURNED");
+						cb(null, results);
+					});
+
 				});
 			}
 		],
@@ -119,3 +134,55 @@ module.exports.search = function(req, res, next) {
 			res.json(results);
 		});
 };
+
+// var searchLocationCallback = function(yelpID, placeName, lat, long){
+// 	return function(callback){
+		
+// 		insta.location_search({ lat: 48.565464564, lng: 2.34656589 }, [options,] function(err, result, remaining, limit) {});
+
+// 			insta.media_search(lat, long, function(err, medias, remaining, limit) {
+// 				console.log("RETURNED INSTA SEARCH: " + placeName);
+
+// 				callback(null, {
+// 						"id": yelpID,
+// 						"name": placeName,
+// 						"media": medias
+// 				});
+
+// 			});
+// 	};
+// }
+
+// TODO: MAKE THIS ASYNCRONOUSLY SEARCH THROUGH ALL LOCATIONS
+
+var createInstagramCallback = function(yelpID, placeName, lat, lng){
+	return function(callback){
+		
+		// do a search for the location id then a search on the location id
+		insta.location_search({ lat: lat, lng: lng }, function(err, result, remaining, limit) {
+			var locationID = 0;
+			
+			for(var i in result){
+				if(result[i].name === placeName){
+					locationID = result[i].id;
+					break;
+				}
+			}
+			// search based on the id
+			insta.location_media_recent(locationID, function(err, result, pagination, remaining, limit) {
+				console.log("RETURNED INSTA SEARCH: " + placeName);
+				callback(null, {
+						"id": yelpID,
+						"name": placeName,
+						"media": result,
+						"pagination": pagination,
+						"remaining": remaining,
+						"limit": limit
+				});
+
+			});
+
+		});
+
+	};
+}

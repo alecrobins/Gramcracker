@@ -37,6 +37,10 @@ module.exports.callback = function(req, res, next){
 };
 
 module.exports.test = function(req, res, next){
+  var insta_token = req.cookies.insta_token;  
+
+  console.log(insta_token);
+
   insta.location_search({ lat: 37.7430954, lng:  -122.4053726 }, function(err, result, remaining, limit) {
   // insta.user_search('sam', function(err, users, remaining, limit) {
     if(err) { console.log( err ); }
