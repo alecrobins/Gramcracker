@@ -188,7 +188,6 @@ var createInstagramCallback = function(yelpID, placeName, lat, lng){
 var createLocationCallback = function(locationID){
 	return function(callback){
 		insta.location_media_recent(locationID, function(err, result, pagination, remaining, limit) {
-			console.log(result);
 			callback(null, {
 				"locationID": locationID, 
 				"data": _.sortByOrder(result, ['likes.count', 'comments.count'], ['desc', 'desc']),
