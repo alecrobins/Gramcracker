@@ -135,25 +135,23 @@ module.exports.search = function(req, res, next) {
 		});
 };
 
-// var searchLocationCallback = function(yelpID, placeName, lat, long){
-// 	return function(callback){
+var searchLocationCallback = function(yelpID, placeName, lat, lng){
+	return function(callback){
 		
-// 		insta.location_search({ lat: 48.565464564, lng: 2.34656589 }, [options,] function(err, result, remaining, limit) {});
+		insta.location_search({ lat: lat, lng: lng }, function(err, result, remaining, limit) {});
 
-// 			insta.media_search(lat, long, function(err, medias, remaining, limit) {
-// 				console.log("RETURNED INSTA SEARCH: " + placeName);
+			insta.media_search(lat, long, function(err, medias, remaining, limit) {
+				console.log("RETURNED INSTA SEARCH: " + placeName);
 
-// 				callback(null, {
-// 						"id": yelpID,
-// 						"name": placeName,
-// 						"media": medias
-// 				});
+				callback(null, {
+						"id": yelpID,
+						"name": placeName,
+						"media": medias
+				});
 
-// 			});
-// 	};
-// }
-
-// TODO: MAKE THIS ASYNCRONOUSLY SEARCH THROUGH ALL LOCATIONS
+			});
+	};
+}
 
 var createInstagramCallback = function(yelpID, placeName, lat, lng){
 	return function(callback){
@@ -162,27 +160,42 @@ var createInstagramCallback = function(yelpID, placeName, lat, lng){
 		insta.location_search({ lat: lat, lng: lng }, function(err, result, remaining, limit) {
 			var locationID = 0;
 			
+			var asyncCallBacks = [];
+
 			for(var i in result){
 				if(result[i].name === placeName){
 					locationID = result[i].id;
-					break;
+					var locationCallback = createLocationCallback(locationID);
+					asyncCallBacks.push(locationCallback);
 				}
 			}
-			// search based on the id
-			insta.location_media_recent(locationID, function(err, result, pagination, remaining, limit) {
-				console.log("RETURNED INSTA SEARCH: " + placeName);
+
+			// collect all the pictures from all the places
+			async.parallel(asyncCallBacks, function(err, results){
 				callback(null, {
 						"id": yelpID,
 						"name": placeName,
-						"media": result,
-						"pagination": pagination,
-						"remaining": remaining,
-						"limit": limit
+						"media": results,
 				});
-
 			});
-
+		
 		});
 
 	};
+}
+
+// create a callback for instagram pictures at a certain location
+var createLocationCallback = function(locationID){
+	return function(callback){
+		insta.location_media_recent(locationID, function(err, result, pagination, remaining, limit) {
+			console.log(result);
+			callback(null, {
+				"locationID": locationID, 
+				"data": _.sortByOrder(result, ['likes.count', 'comments.count'], ['desc', 'desc']),
+				"pagination": pagination,
+				"remaining": remaining,
+				"limit": limit
+			});
+		});
+	}
 }
