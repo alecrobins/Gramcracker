@@ -1,15 +1,18 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var config = require('./config');
 var cors = require('cors');
+var exphbs = require('express-handlebars');
+
+require("node-jsx").install();
 
 var routes = require('./routes/routes');
+var config = require('./config');
 
 var app = express();
+
 
 var corsOptions = {
   origin: 'http://localhost:3000'
@@ -19,7 +22,8 @@ app.use(cors(corsOptions));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'handlebars');
+app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 
 // uncomment after placing your favicon in /public
 app.use(logger('dev'));
@@ -27,7 +31,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('node-compass')({mode: 'expanded'}));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// TODO: need to change this in production
+app.use("/", express.static(path.join(__dirname, 'src')));
 
 // set up routes
 routes(app);

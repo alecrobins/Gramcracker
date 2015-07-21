@@ -1,0 +1,16 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+
+a {
+  color: #00B7FF; }
+
+label {
+  float: left;
+  margin-right: 10px; }
+  label.test {
+    color: yellow; }
+
+input {
+  margin-bottom: 20px;
+  display: block; }
