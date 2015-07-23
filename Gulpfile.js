@@ -10,7 +10,9 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     react = require('gulp-react');
     minifyCSS = require('gulp-minify-css'),
-    debug = require('gulp-debug');
+    debug = require('gulp-debug'),
+    gutil = require('gulp-util'),
+    stylish = require('jshint-stylish');
 
 // Lint React Task
 gulp.task('lint', function() {
@@ -18,7 +20,7 @@ gulp.task('lint', function() {
            	.pipe(react())
            	.pipe(jshint())
            	.pipe(jshint.reporter("default", {verbose: true}))
-           	.pipe(jshint.reporter("fail"))
+           	.pipe(jshint.reporter(stylish))
            	.pipe(debug());
 });
 
@@ -26,7 +28,7 @@ gulp.task('lint', function() {
 gulp.task('scripts', function () {
 
 	 // Render the React components server side
-    gulp.src(['react/main.js'])
+    gulp.src(['react/app.js'])
     	.pipe(browserify({
     	    debug: true,
     	    transform: [ 'reactify' ]

@@ -7,7 +7,7 @@ exports.home = function (req, res){
     "hello": "world"
    }
 
-   var markup = React.renderToString(ReactApp({}));
+   var markup = React.renderToString(ReactApp({testData: testData}));
 
    // Render our 'home' template
    res.render('home', { markup: markup });
