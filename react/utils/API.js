@@ -8,6 +8,7 @@ module.exports = {
   getTestData: function() {
     var data = {
     	testData: {
+        "username": "Alec Robins",
     		"names": ['alec', 'joe', 'bob'],
     		"id": 1,
     		"currentDate": new Date()

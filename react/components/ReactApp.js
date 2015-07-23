@@ -6,17 +6,17 @@ var TestDataStore = require('../stores/TestDataStore');
 // Method to retrieve application state from store
 function getAppState() {
   return {
-    testData: TestDataStore.getData()
+    testData: TestDataStore.getData(),
+    displayName: "hello this is from the server"
   };
 }
 
 var ReactApp = React.createClass({
-  
-  displayName: "HelloWorld",
 
   // Use getAppState method to set initial state
   getInitialState: function() {
-    return getAppState();
+    return this.props;
+    // return getAppState();
   },
 
   // Listen for changes
@@ -39,7 +39,8 @@ var ReactApp = React.createClass({
     return (
     	<div>
       	<h1>This is all a test from the React App</h1>
-      	<h2>{this.state.testData}</h2>
+      	<h2>{this.state.username}</h2>
+      	<h3>{this.state.id}</h3>
       </div>
    );
   }
