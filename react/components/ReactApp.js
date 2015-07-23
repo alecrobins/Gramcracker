@@ -2,6 +2,7 @@
 
 var React = require('react/addons');
 var TestDataStore = require('../stores/TestDataStore');
+var TestDataActions = require('../actions/TestDataActions.js');
 
 // Method to retrieve application state from store
 function getAppState() {
@@ -47,3 +48,9 @@ var ReactApp = React.createClass({
 });
 
 module.exports = ReactApp;
+
+if (typeof window !== 'undefined') {
+    var container = document.getElementById("react-main-mount");
+    var props = JSON.parse(document.getElementById("props").innerHTML);
+    React.renderComponent(ReactApp(props), container);
+}
