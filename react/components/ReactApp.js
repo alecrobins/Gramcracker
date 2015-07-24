@@ -6,10 +6,7 @@ var TestDataActions = require('../actions/TestDataActions.js');
 
 // Method to retrieve application state from store
 function getAppState() {
-  return {
-    testData: TestDataStore.getData(),
-    displayName: "hello this is from the server"
-  };
+  return TestDataStore.getData();
 }
 
 var ReactApp = React.createClass({
@@ -35,6 +32,10 @@ var ReactApp = React.createClass({
     this.setState(getAppState());
   },
 
+  testCreateAction: function(){
+    TestDataActions.increaseID();
+  },
+
   // Render the component
   render: function(){
     return (
@@ -42,6 +43,7 @@ var ReactApp = React.createClass({
       	<h1>This is all a test from the React App</h1>
       	<h2>{this.state.username}</h2>
       	<h3>{this.state.id}</h3>
+        <h4 onClick={this.testCreateAction}> Click me to increase the id </h4>
       </div>
    );
   }
@@ -49,8 +51,11 @@ var ReactApp = React.createClass({
 
 module.exports = ReactApp;
 
+// render the app with the passed in data once initiated
 if (typeof window !== 'undefined') {
-    var container = document.getElementById("react-main-mount");
     var props = JSON.parse(document.getElementById("props").innerHTML);
-    React.renderComponent(ReactApp(props), container);
+    React.render(
+        React.createElement(ReactApp, props),
+        document.getElementById('react-main-mount')
+    );
 }

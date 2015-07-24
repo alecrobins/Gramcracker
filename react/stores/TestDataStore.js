@@ -11,6 +11,11 @@ function loadData(data) {
   _testData = data.testData;
 }
 
+function incrementID(){
+  console.log("increaseID");
+  _testData.id = _testData.id + 1;
+}
+
 // Merge our store with Node's Event Emitter
 var TestDataStore = assign(EventEmitter.prototype, {
 
@@ -43,6 +48,10 @@ AppDispatcher.register(function(payload) {
     case TestDataConstants.LOAD_DATA:
       // Call internal method based upon dispatched action
       loadData(action.data);
+      break;
+
+    case TestDataConstants.INCR_ID:
+      incrementID();
       break;
 
     default:
