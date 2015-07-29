@@ -1,10 +1,25 @@
+/**
+	CSS BEM: 
+	
+	.block
+	.block__element
+	.block--modifer
+
+	.person {}
+	.person__hand {}
+	.person--female {}
+	.person--female__hand {}
+	.person__hand--left {}
+
+**/
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: red;
 }
 
 label {

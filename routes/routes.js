@@ -6,7 +6,7 @@ var _signin = require('./signin');
 module.exports = function(app){
 
 	// PAGE ROUTES
-	app.get("/", _index.home);
+	// app.get("/", _index.home);
 	app.get("/search", _search.home);
 
 	// INSTAGRAM SIGN IN

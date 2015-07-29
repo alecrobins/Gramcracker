@@ -1,5 +1,5 @@
 var React = require('react/addons'),
-ReactApp = React.createFactory(require('../react/components/ReactApp'));
+App = React.createFactory(require('../react/components/App'));
 // "/"
 exports.home = function (req, res){
    
@@ -10,7 +10,7 @@ exports.home = function (req, res){
       "currentDate": new Date()
    };
 
-   var markup = React.renderToString(ReactApp(initProps));
+   var markup = React.renderToString(App(initProps));
 
    // Render our 'home' template
    res.render('home',{

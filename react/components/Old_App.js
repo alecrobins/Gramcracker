@@ -3,14 +3,13 @@
 var React = require('react/addons');
 var TestDataStore = require('../stores/TestDataStore');
 var TestDataActions = require('../actions/TestDataActions.js');
-var ChildTest = require('./ChildTest');
 
 // Method to retrieve application state from store
 function getAppState() {
   return TestDataStore.getData();
 }
 
-var ReactApp = React.createClass({
+var OldReactApp = React.createClass({
 
   // Use getAppState method to set initial state
   getInitialState: function() {
@@ -45,19 +44,19 @@ var ReactApp = React.createClass({
       	<h2>{this.state.username}</h2>
       	<h3>{this.state.id}</h3>
         <h4 onClick={this.testCreateAction}> Click me to increase the id </h4>
-        <ChildTest thisID= {this.state.id} />
+        <a href="/api/signin">Instagram Login</a> 
       </div>
    );
   }
 });
 
-module.exports = ReactApp;
+module.exports = OldReactApp;
 
-// render the app with the passed in data once initiated
-if (typeof window !== 'undefined') {
-    var props = JSON.parse(document.getElementById("props").innerHTML);
-    React.render(
-        React.createElement(ReactApp, props),
-        document.getElementById('react-main-mount')
-    );
-}
+// // render the app with the passed in data once initiated
+// if (typeof window !== 'undefined') {
+//     var props = JSON.parse(document.getElementById("props").innerHTML);
+//     React.render(
+//         React.createElement(ReactApp, props),
+//         document.getElementById('react-main-mount')
+//     );
+// }

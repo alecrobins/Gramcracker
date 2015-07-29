@@ -18,8 +18,8 @@ var gulp = require('gulp'),
     source = require('vinyl-source-stream');
 
 var path = {
-    OUT: 'app.js',
-    ENTRY_POINT: './react/app.js',
+    OUT: 'main.js',
+    ENTRY_POINT: './react/main.js',
     DEST_SRC: './src/js/'
 };
 
