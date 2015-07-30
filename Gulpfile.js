@@ -24,14 +24,14 @@ var path = {
 };
 
 // Lint React Task
-gulp.task('lint', function() {
-    return gulp.src('./react/**/*.js')
-           	.pipe(react())
-           	.pipe(jshint())
-           	.pipe(jshint.reporter("default", {verbose: true}))
-           	.pipe(jshint.reporter(stylish))
-           	.pipe(debug());
-});
+// gulp.task('lint', function() {
+//     return gulp.src('./react/**/*.js')
+//            	.pipe(react())
+//            	.pipe(jshint())
+//            	.pipe(jshint.reporter("default", {verbose: true}))
+//            	.pipe(jshint.reporter(stylish))
+//            	.pipe(debug());
+// });
 
 // Compile Sass
 gulp.task('sass', function() {
@@ -44,8 +44,8 @@ gulp.task('sass', function() {
 //Watch Files For Changes
 gulp.task('watch', function() {
     
-    gulp.watch('react/**/*.js', ['lint']);
-    gulp.watch('scss/*.scss', ['sass']);
+    // gulp.watch('react/**/*.js', ['lint']);
+    // gulp.watch('scss/*.scss', ['sass']);
     
     // Reactify 
     var watcher  = watchify(browserify({
@@ -68,4 +68,4 @@ gulp.task('watch', function() {
 });
 
 // Default Task
-gulp.task('default', ['lint', 'watch']);
+gulp.task('default', ['watch']);

@@ -15,7 +15,7 @@ module.exports = function(app){
 	app.get("/api/test", _signin.test);
 
 	// SEARCH
-	app.post("/api/searchYelp", _search.search);
+	app.post("/api/search", _search.search);
 
 	// catch 404 and forward to error handler
 	app.use(function(req, res, next) {

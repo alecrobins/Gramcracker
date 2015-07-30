@@ -78,7 +78,7 @@ module.exports.searchToObj = function(query){
 		"sort": query.sort || null,
 		"category_filter": query.category_filter || null,
 		"location": query.location || null,
-		"cll": query.latitude + "," + query.longitude || null
+		"cll": query.lat + "," + query.lng || null
 	};
 };
 

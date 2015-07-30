@@ -4,7 +4,7 @@ var React = require('react/addons');
 var Router = require('react-router');
 var Link = Router.Link;
 var UserStore = require('../stores/UserStore');
-var LoginActions = require('../actions/LoginActions.js');
+var LoginActions = require('../actions/LoginActions');
 
 // Method to retrieve application state from store
 function getAppState() {
