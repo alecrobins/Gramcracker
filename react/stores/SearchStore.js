@@ -19,21 +19,25 @@ var _search = {
 
   loadData: function(data) {
     console.log("DATA LOADED");
-    console.log(data);
-    _searchData = data.searchData;
+    _searchData = $.extend({}, data[0]);;
   },
 
   // conduct a search with the given paraments
   search: function(searchData){
     console.log("SENDING OFF");
+    var self = this;
+
     $.ajax({
       url: '/api/search',
       data: searchData,
       type: 'POST',
     }).done(function(data){
-      console.log("IT WORKED");
-      console.log(data);
-      router.transitionTo('place', null, null);
+      
+      self.loadData(data);
+      self.setIsDataLoaded(true);
+
+      router.transitionTo('search', null, null);
+
     }).fail(function(){
       console.log("FAILED");
     });
@@ -46,6 +50,7 @@ var SearchStore = assign(EventEmitter.prototype, {
 
   // Returns all shoes
   getData: function() {
+    console.log(_searchData);
     return _searchData;
   },
 
