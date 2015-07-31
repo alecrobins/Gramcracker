@@ -2,9 +2,8 @@
 
 var React = require('react/addons');
 var SearchActions = require('../actions/SearchActions');
-var SearchStore = require('../stores/SearchStore');
 
-var Search = React.createClass({
+var HomePage = React.createClass({
 
 	handleSubmit: function(e){
 		e.preventDefault();
@@ -29,7 +28,7 @@ var Search = React.createClass({
 
 	render: function() {
 		return (
-			<div className = "SearchView">
+			<div className = "home--search-container">
 				<form onSubmit={this.handleSubmit}>
 					<label htmlFor="term">Term</label>
 					<input type="text" name="term" ref="term" />
@@ -64,4 +63,4 @@ var Search = React.createClass({
 	}
 });
 
-module.exports = Search;
+module.exports = HomePage;

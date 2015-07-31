@@ -10,6 +10,13 @@ var SearchActions = {
     	});
   	},
 
+  	isDataLoaded: function(_isDataLoaded) {
+    	AppDispatcher.handleAction({
+      	actionType: SearchStoreConstants.IS_DATA_LOADED,
+      	isDataLoaded: _isDataLoaded
+    	});
+  	},
+
 };
 
 module.exports = SearchActions;

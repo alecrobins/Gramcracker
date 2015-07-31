@@ -1,13 +1,16 @@
 /** @jsx React.DOM */
 
 var React = require('react/addons');
-// var ReactApp = require('./components/ReactApp');
-var Router = require('react-router');
-var Root = require('./Root');
+var router = require('./router');
 var API = require('./utils/API.js');
+
+// Include the stores
+var SearchStore = require('./stores/SearchStore');
+var UserStore = require('./stores/UserStore');
+
 
 var mountNode = document.getElementById("react-main-mount");
 
-Router.run(Root, function (Handler) {
-  React.render(<Handler />, mountNode);
+router.run(function(Handler){
+	React.render(<Handler />, mountNode);
 });

@@ -4,6 +4,7 @@ var React = require('react/addons');
 var TestDataStore = require('../stores/TestDataStore');
 var TestDataActions = require('../actions/TestDataActions.js');
 var Header = require('./Header');
+var HomePage = require('./HomePage');
 var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
