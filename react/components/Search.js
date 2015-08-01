@@ -29,11 +29,6 @@ var Search = React.createClass({
 
 	// Render the component
 	render: function(){
-		var listItems = "";
-		for(var i in this.state){
-			listItems += "<li>" + this.state[i].name + "</li>";
-		}
-
 	 	return (
 	 		<div>
 		   	<div className = "places" >

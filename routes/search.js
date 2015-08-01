@@ -32,11 +32,11 @@ module.exports.search = function(req, res, next) {
 					var asyncCallBacks = [];
 
 					for(var i in data.businesses){
-						var place = data.businesses[i];
+						var placeData = data.businesses[i];
 						var placeCoords = place.location.coordinate;
 
 						// create the new function that will be called in parallel
-						var newPlaceFunc = createInstagramCallback(place, place.id,
+						var newPlaceFunc = createInstagramCallback(placeData, place.id,
 								 place.name, placeCoords.latitude, placeCoords.longitude);
 
 						asyncCallBacks.push(newPlaceFunc);
@@ -69,7 +69,7 @@ var searchLocationCallback = function(yelpID, placeName, lat, lng){
 	}
 }
 
-var createInstagramCallback = function(place, yelpID, placeName, lat, lng){
+var createInstagramCallback = function(placeData, yelpID, placeName, lat, lng){
 	return function(callback){
 		
 		// do a search for the location id then a search on the location id
@@ -126,7 +126,7 @@ var createInstagramCallback = function(place, yelpID, placeName, lat, lng){
 				callback(null, {
 						"id": yelpID,
 						"name": placeName,
-						"place": place, 
+						"place": placeData, 
 						"media": _.sortByOrder(media, ['likes.count', 'comments.count'], ['desc', 'desc']),
 						"insta_meta": insta_meta
 				});

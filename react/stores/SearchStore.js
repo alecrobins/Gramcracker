@@ -36,6 +36,8 @@ var _search = {
       self.loadData(data);
       self.setIsDataLoaded(true);
 
+      console.log(router);
+
       router.transitionTo('search', null, null);
 
     }).fail(function(){
