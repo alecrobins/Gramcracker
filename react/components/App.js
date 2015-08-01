@@ -9,12 +9,17 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var Link = Router.Link;
 
+
 // Method to retrieve application state from store
 function getAppState() {
   return TestDataStore.getData();
 }
 
 var App = React.createClass({
+
+  contextTypes: {
+    router: React.PropTypes.func
+  },
 
   // Use getAppState method to set initial state
   getInitialState: function() {

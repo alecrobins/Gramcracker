@@ -36,9 +36,13 @@ var _search = {
       self.loadData(data);
       self.setIsDataLoaded(true);
 
-      console.log(router);
+      console.log("DATA RECIEVED");
+      console.log(data);
 
-      router.transitionTo('search', null, null);
+      //TODO: need to send out change
+      SearchStore.emitChange();
+
+      // router.transitionTo('search', null, null);
 
     }).fail(function(){
       console.log("FAILED");

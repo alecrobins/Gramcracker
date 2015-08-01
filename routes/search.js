@@ -33,11 +33,11 @@ module.exports.search = function(req, res, next) {
 
 					for(var i in data.businesses){
 						var placeData = data.businesses[i];
-						var placeCoords = place.location.coordinate;
+						var placeCoords = placeData.location.coordinate;
 
 						// create the new function that will be called in parallel
-						var newPlaceFunc = createInstagramCallback(placeData, place.id,
-								 place.name, placeCoords.latitude, placeCoords.longitude);
+						var newPlaceFunc = createInstagramCallback(placeData, placeData.id,
+								 placeData.name, placeCoords.latitude, placeCoords.longitude);
 
 						asyncCallBacks.push(newPlaceFunc);
 					}

@@ -13,6 +13,10 @@ function getAppState() {
 
 var Header = React.createClass({
 
+	contextTypes: {
+   	router: React.PropTypes.func
+  	},
+
 	// Use getAppState method to set initial state
 	getInitialState: function() {
 		return getAppState();
@@ -49,7 +53,6 @@ var Header = React.createClass({
 					<a onClick ={this.signin} > Log in </a>
 				</div>
 
-				<Link to="search"> Search </Link>
 				<Link to="place"> Place </Link>
 
 			</header>

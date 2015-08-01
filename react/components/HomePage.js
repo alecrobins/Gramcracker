@@ -2,8 +2,13 @@
 
 var React = require('react/addons');
 var SearchActions = require('../actions/SearchActions');
+var router = require('../router');
 
 var HomePage = React.createClass({
+	
+	contextTypes: {
+   	router: React.PropTypes.func
+ 	},
 
 	handleSubmit: function(e){
 		e.preventDefault();
@@ -19,10 +24,20 @@ var HomePage = React.createClass({
 			lng: React.findDOMNode(this.refs.lng).value.trim(),
 		};
 
-		console.log("started the search");
+		if(searchData.location === null){
+			// TODO: need to set search data to local spot
+		}
+
+		// delete the null
+		for(var i in searchData){
+			if(searchData[i] === ""){
+				delete searchData[i];
+			}
+		}
 
 		// send off the search
-		SearchActions.search(searchData);
+		// SearchActions.search(searchData);
+      router.transitionTo('search', null, searchData); //, location: searchData.location
 
 	},
 
