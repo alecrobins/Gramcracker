@@ -82,3 +82,7 @@ module.exports.searchToObj = function(query){
 	};
 };
 
+// check if s1 is a part of s2 or if s2 is a part of s1
+module.exports.contains = function(s1, s2){
+	return s1.indexOf(s2) > -1 || s2.indexOf(s1) > -1;
+}

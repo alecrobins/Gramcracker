@@ -2,9 +2,11 @@
 var _ = require('lodash');
 var async = require('async');
 var http = require('http');
+var lev = require('levenshtein');
 
 var config = require('../config');
 var util = require('../modules/util');
+
 
 var insta = require('instagram-node').instagram();
 
@@ -26,7 +28,6 @@ module.exports.search = function(req, res, next) {
 
 				// 1: get all resturant information from yelp
 				util.request_yelp(util.searchToObj(req.body), function(error, res, body){
-					console.log("SUCCEES");
 					var data = JSON.parse(body);
 					var asyncCallBacks = [];
 
@@ -73,25 +74,63 @@ var createInstagramCallback = function(place, yelpID, placeName, lat, lng){
 		
 		// do a search for the location id then a search on the location id
 		insta.location_search({ lat: lat, lng: lng }, function(err, result, remaining, limit) {
-			var locationID = 0;
 			var asyncCallBacks = [];
 
+			// strip word of all characters and spaces
+			var place = placeName.replace(/[_\W]/g, '').toLowerCase();
+			
 			for(var i in result){
-				if(result[i].name === placeName){
-					locationID = result[i].id;
-					var locationCallback = createLocationCallback(locationID);
+
+				// strinp word
+				var instaPlace = result[i].name.replace(/[_\W]/g, '').toLowerCase();
+
+				// computee levenshtein distance between the place name and
+				// the instagram name to account for difference in spelling
+				var l = new lev(place, instaPlace);
+				
+				// if the levenshtein distance is less then 3 then continue
+				if(l <= 3 || util.contains(place, instaPlace)){
+					// pass the location id to the callback
+					var locationCallback = createLocationCallback(result[i].id);
 					asyncCallBacks.push(locationCallback);
 				}
+
 			}
 
 			// collect all the pictures from all the places
 			async.parallel(asyncCallBacks, function(err, results){
+				
+				// keep track of the pagination, limit, remaing, and locationID
+				// for each instagram result
+				var insta_meta = [];
+				var media = [];
+
+				for(var i in results){
+					
+					// format meta data
+					insta_meta.push({
+						limit: results[i].limit,
+						locationID: results[i].locationID,
+						pagination: results[i].pagination,
+						remaining: results[i].remaining
+					});
+
+					// concat all meida into one array
+					media = media.concat(results[i].data);
+				}
+
+				// TODO: sort give a food score to each instagram photo
+				// based on likes, comments mentioning food
+
+				// this is what is returned to the client
 				callback(null, {
 						"id": yelpID,
 						"name": placeName,
 						"place": place, 
-						"media": results,
+						"media": _.sortByOrder(media, ['likes.count', 'comments.count'], ['desc', 'desc']),
+						"insta_meta": insta_meta
 				});
+
 			});
 		});
 	};
@@ -103,7 +142,7 @@ var createLocationCallback = function(locationID){
 		insta.location_media_recent(locationID, function(err, result, pagination, remaining, limit) {
 			callback(null, {
 				"locationID": locationID, 
-				"data": _.sortByOrder(result, ['likes.count', 'comments.count'], ['desc', 'desc']),
+				"data": result,
 				"pagination": pagination,
 				"remaining": remaining,
 				"limit": limit
