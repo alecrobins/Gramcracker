@@ -8,12 +8,11 @@ var uuid = require('node-uuid');
 var PlaceContainer = React.createClass({
 
 	contextTypes: {
-   	router: React.PropTypes.func
+   	router: React.PropTypes.func.isRequired
   	},
 
   	goToPlace: function(){
-  		console.log(this.props);
-     	router.transitionTo('place', {id: this.props.placeData.id}, null);
+     	this.context.router.transitionTo('place', {id: this.props.placeData.id}, null);
   	},
 
 	render: function() {
@@ -22,7 +21,7 @@ var PlaceContainer = React.createClass({
 		return (			
 			<div className = "place-container">
 				<div className = "place-information">
-					<h1 onClick={this.goToPlace}> {this.props.placeData.name} </h1>
+					<h1 onClick={this.goToPlace}>{this.props.placeData.name}</h1>
 				</div>
 
 				<div className = "place-media">

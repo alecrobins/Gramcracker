@@ -6,7 +6,7 @@ var SearchBar = require('./SearchBar');
 var HomePage = React.createClass({
 	
 	contextTypes: {
-   	router: React.PropTypes.func
+   	router: React.PropTypes.func.isRequired
  	},
 
 	render: function() {

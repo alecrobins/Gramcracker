@@ -50,7 +50,7 @@ var Header = React.createClass({
 				</Link>
 
 				<div className="header__user">
-					<a onClick ={this.signin} > Log in </a>
+					<a onClick ={this.signin} >Log in</a>
 				</div>
 
 			</header>

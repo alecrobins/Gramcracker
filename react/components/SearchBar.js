@@ -7,12 +7,12 @@ var router = require('../router');
 var SearchBar = React.createClass({
 	
 	contextTypes: {
-   	router: React.PropTypes.func
+   	router: React.PropTypes.func.isRequired
  	},
 
 	handleSubmit: function(e){
 		e.preventDefault();
-
+		var self = this;
 		var searchData = {
 			term: React.findDOMNode(this.refs.term).value.trim(),
 			location: React.findDOMNode(this.refs.location).value.trim(),
@@ -44,8 +44,9 @@ var SearchBar = React.createClass({
 					delete searchData[i];
 				}
 			}
+
 			// send off the search with searchData as the query
-     		router.transitionTo('search', null, searchData);
+     		self.context.router.transitionTo('search', null, searchData);
 		};
 
 		completeSearch();

@@ -18,7 +18,7 @@ var _search = {
   },
 
   setData: function(data) {
-    console.log("DATA LOADED");
+    console.log("SearchStore: SET DATA LOADED");
     _searchData = $.extend({}, data[0]);;
   },
 
@@ -51,26 +51,7 @@ var _search = {
 
   },
 
-};
-
-// Merge our store with Node's Event Emitter
-var SearchStore = assign(EventEmitter.prototype, {
-
-  // Returns all 
-  getData: function() {
-    console.log("GET _ DATA");
-    console.log(_searchData);
-    return _searchData;
-  },
-
-  // TEST
-  returnData: function(){
-    return _searchData;
-  },
-
-  // Returns all place
-  getPlace: function(placeID) {
-    
+  getPlace: function(placeID){
     if($.isEmptyObject(_searchData)){
       return null;
     }
@@ -83,6 +64,29 @@ var SearchStore = assign(EventEmitter.prototype, {
     }
 
     return null;
+  }
+
+};
+
+// Merge our store with Node's Event Emitter
+var SearchStore = assign(EventEmitter.prototype, {
+
+  // Returns all 
+  getData: function() {
+    console.log("SearchStore: GET _ DATA");
+    return _searchData;
+  },
+
+  // TEST
+  returnData: function(){
+    console.log("SearchStore: RETURN _ DATA");
+    return _searchData;
+  },
+
+  // Returns all place
+  getPlace: function(placeID) {
+    console.log("SearchStore: GET PLACE");
+    return _search.getPlace(placeID);
 
   },
 
@@ -116,16 +120,12 @@ AppDispatcher.register(function(payload) {
       _search.search(action.searchData);
       break;
 
-    case SearchStoreConstants.IS_DATA_LOADED:
-      _search.setIsDataLoaded(action.isDataLoaded);
-      break;
-
     default:
       return true;
   }
   
   // If action was acted upon, emit change event
-  //SearchStore.emitChange();
+  SearchStore.emitChange();
 
   return true;
 

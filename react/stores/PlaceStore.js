@@ -3,7 +3,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-var SearchStore = require('./SearchStore');
+// var SearchStore = require('./SearchStore');
 var PlaceStoreConstants = require('../constants/SearchStoreConstants');
 var router = require('../router');
 
@@ -21,7 +21,8 @@ var _place = {
   setPlaceData: function(_placeID){
     
     var self = this;
-    var place = SearchStore.getPlace(_placeID);
+    var place = null;
+    // var place = SearchStore.getPlace(_placeID);
 
     if(place === null){
       $.ajax({
@@ -89,7 +90,7 @@ AppDispatcher.register(function(payload) {
       return true;
   }
 
-  PlaceStore.emitChange();
+  // PlaceStore.emitChange();
 
   return true;
 

@@ -6,11 +6,12 @@ var SearchStore = require('../stores/SearchStore');
 var SearchBar = require('./SearchBar');
 var PlaceContainer = require('./PlaceContainer');
 var uuid = require('node-uuid');
+var router = require('../router');
 
 var Search = React.createClass({
 	
 	contextTypes: {
-   	router: React.PropTypes.func
+   	router: React.PropTypes.func.isRequired
   	},
 	
 	// Use getAppState method to set initial state
@@ -21,13 +22,18 @@ var Search = React.createClass({
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-	 	this.setState({});
+	 	this.setState({}); 
 		SearchActions.search(nextProps.query);
 	},
 
 	// Listen for changes
 	componentDidMount: function() {
 		SearchStore.addChangeListener(this._onChange);
+	},
+
+	// Unbind change listener
+	componentWillMount: function() {
+		this.setState(SearchStore.returnData());
 	},
 
 	// Unbind change listener
@@ -42,7 +48,6 @@ var Search = React.createClass({
 
 	// Render the component
 	render: function(){
-		console.log("RENDERING . . . ");
 		var display;
 		var self = this;
 		if ($.isEmptyObject(this.state)) {
