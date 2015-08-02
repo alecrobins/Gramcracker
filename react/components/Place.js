@@ -3,6 +3,7 @@
 var React = require('react/addons');
 var PlaceStore = require('../stores/PlaceStore');
 var PlaceContainer = require('./PlaceContainer');
+var GoogleMap = require('./GoogleMap');
 var PlaceActions = require('../actions/PlaceActions');
 var uuid = require('node-uuid');
 
@@ -42,6 +43,7 @@ var Place = React.createClass({
 		}else{
 			display =
 				<div className = "place-container">
+			  		<GoogleMap placeData = {this.state} type = {"single"} />
 			   	<PlaceContainer key={uuid.v1()} placeData={this.state} />
 			   </div>;
 		}

@@ -59,7 +59,7 @@ var Search = React.createClass({
 		} else {
 		  display =
 		   <div className = "places" >
-		  		<GoogleMap placeData = {this.state} />
+		  		<GoogleMap placeData = {this.state} type = {"list"} />
 		  		<SearchBar isHome = {false} queryParams = {this.props.query} />
 		  		<div className = "results-container">
 			  		{Object.keys(this.state).map(function(i){

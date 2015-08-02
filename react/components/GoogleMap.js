@@ -9,36 +9,77 @@ var GoogleMap = React.createClass({
    	router: React.PropTypes.func.isRequired
   	},
 
-  	initMap: function(){
+	initMapSingle: function(){
   		var placeData = this.props.placeData;
-  		var markers = [];
+		
+		var location = 
+	  			{
+	  				lat: placeData.place.location.coordinate.latitude,
+	  				lng: placeData.place.location.coordinate.longitude
+	  			};
 
-  		var mapOptions = {
+		var mapOptions = {
+			zoom: 15,
+			center: new google.maps.LatLng(location.lat,location.lng),
 			panControl: true,
 			panControlOptions: {
-   	     position: google.maps.ControlPosition.LEFT_BOTTOM
+		     position: google.maps.ControlPosition.LEFT_BOTTOM
 			},
 			zoomControl: true,
 			zoomControlOptions: {
 		   	style: google.maps.ZoomControlStyle.SMALL,
-   	    	position: google.maps.ControlPosition.RIGHT_BOTTOM
+		    	position: google.maps.ControlPosition.RIGHT_BOTTOM
 		  	},
 			mapTypeControl: false,
 			scaleControl: false,
 			streetViewControl: false,
 			overviewMapControl: false
-	  };
+		};
 
-	  var map = new google.maps.Map(React.findDOMNode(this.refs.mapNode),
-	      mapOptions);
+	  	var map = new google.maps.Map(React.findDOMNode(this.refs.mapNode), mapOptions);
+  		
+  		// add market to map
+  		var marker = new google.maps.Marker({
+	    	position: location,
+	    	animation: google.maps.Animation.DROP,
+	    	map: map,
+	    	title: placeData.name
+	  	});
 
-	  for(var i in placeData){
+	  	var latLng = marker.getPosition();
+		map.setCenter(latLng);
+	},
+
+  	initMapList: function(){
+  		var mapOptions = {
+			panControl: true,
+			panControlOptions: {
+		     position: google.maps.ControlPosition.LEFT_BOTTOM
+			},
+			zoomControl: true,
+			zoomControlOptions: {
+		   	style: google.maps.ZoomControlStyle.SMALL,
+		    	position: google.maps.ControlPosition.RIGHT_BOTTOM
+		  	},
+			mapTypeControl: false,
+			scaleControl: false,
+			streetViewControl: false,
+			overviewMapControl: false
+		};
+
+	  	var map = new google.maps.Map(React.findDOMNode(this.refs.mapNode), mapOptions);
+  		
+  		var placeData = this.props.placeData;
+  		var markers = [];
+
+	 	for(var i in placeData){
 	  		var place = placeData[i].place.location;
 	  		var location = 
 	  			{
 	  				lat: place.coordinate.latitude,
 	  				lng: place.coordinate.longitude
 	  			};
+	  		
 	  		// add market to map
 	  		var marker = new google.maps.Marker({
 		    	position: location,
@@ -48,42 +89,27 @@ var GoogleMap = React.createClass({
 		    	title: placeData[i].name
 		  	});
 
-
-		  var infowindow = new google.maps.InfoWindow({
-		      content: "<div>This is a test</div>"
-		  });
-
-		  	google.maps.event.addListener(marker, 'click', toggleBounce);
-			google.maps.event.addListener(marker, 'hover', function() {
-		   	infowindow.open(map,marker);
-		 	});
-
-
-			function toggleBounce() {
-
-			  if (marker.getAnimation() != null) {
-			    marker.setAnimation(null);
-			  } else {
-			    marker.setAnimation(google.maps.Animation.BOUNCE);
-			  }
-			}
-
 			markers.push(marker);
-	  }
+	  	}
 
+	  	// center the map around the bounds
 	  	var bounds = new google.maps.LatLngBounds();
-		
+
 		for(i=0;i<markers.length;i++) {
 			bounds.extend(markers[i].getPosition());
 		}
 
 		map.fitBounds(bounds);
-
-	  this.setState({map: map});
   	},
 
   	componentDidMount: function(){
-  		this.initMap();
+  		if(this.props.type === "list"){
+	  		this.initMapList();
+  		}
+
+  		if(this.props.type === "single"){
+	  		this.initMapSingle();
+  		}
   	},
 
 	render: function() {
@@ -91,10 +117,10 @@ var GoogleMap = React.createClass({
 
 		return (			
 			<div className = "map-container" ref="mapNode">
-				<h1>I am a map</h1>
 			</div>
 		);
 	}
+
 });
 
 module.exports = GoogleMap;
