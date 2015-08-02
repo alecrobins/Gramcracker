@@ -5,6 +5,7 @@ var SearchActions = require('../actions/SearchActions');
 var SearchStore = require('../stores/SearchStore');
 var SearchBar = require('./SearchBar');
 var PlaceContainer = require('./PlaceContainer');
+var GoogleMap = require('./GoogleMap');
 var uuid = require('node-uuid');
 var router = require('../router');
 
@@ -50,6 +51,7 @@ var Search = React.createClass({
 	render: function(){
 		var display;
 		var self = this;
+		console.log(this.state);
 		if ($.isEmptyObject(this.state)) {
 		  
 		  display = <h1>Loading</h1>;
@@ -57,7 +59,7 @@ var Search = React.createClass({
 		} else {
 		  display =
 		   <div className = "places" >
-		  		<div className="map-container">Map</div>
+		  		<GoogleMap placeData = {this.state} />
 		  		<SearchBar isHome = {false} queryParams = {this.props.query} />
 		  		<div className = "results-container">
 			  		{Object.keys(this.state).map(function(i){
