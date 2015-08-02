@@ -3,6 +3,7 @@
 var React = require('react/addons');
 var PlacePhoto = require('./PlacePhoto');
 var router = require('../router');
+var uuid = require('node-uuid');
 
 var PlaceContainer = React.createClass({
 
@@ -27,7 +28,7 @@ var PlaceContainer = React.createClass({
 				<div className = "place-media">
 				{$.map(this.props.placeData.media, function(mediaItem) {
 		         return (
-		         	<PlacePhoto key={mediaItem.id} mediaData={mediaItem} />
+		         	<PlacePhoto key={uuid.v1()} mediaData={mediaItem} />
 		         )
 		      })}
 		      </div>

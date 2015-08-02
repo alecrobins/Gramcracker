@@ -5,6 +5,7 @@ var SearchActions = require('../actions/SearchActions');
 var SearchStore = require('../stores/SearchStore');
 var SearchBar = require('./SearchBar');
 var PlaceContainer = require('./PlaceContainer');
+var uuid = require('node-uuid');
 
 var Search = React.createClass({
 	
@@ -56,7 +57,7 @@ var Search = React.createClass({
 		  		<div className = "results-container">
 			  		{Object.keys(this.state).map(function(i){
 			         return (
-			         	<PlaceContainer key={self.state.id} placeData={self.state[i]} />
+			         	<PlaceContainer key={uuid.v1()} placeData={self.state[i]} />
 			         )
 			      })}
 		  		</div>

@@ -4,6 +4,7 @@ var React = require('react/addons');
 var PlaceStore = require('../stores/PlaceStore');
 var PlaceContainer = require('./PlaceContainer');
 var PlaceActions = require('../actions/PlaceActions');
+var uuid = require('node-uuid');
 
 var Place = React.createClass({
 	
@@ -41,7 +42,7 @@ var Place = React.createClass({
 		}else{
 			display =
 				<div className = "place-container">
-			   	<PlaceContainer key={this.state.id} placeData={this.state} />
+			   	<PlaceContainer key={uuid.v1()} placeData={this.state} />
 			   </div>;
 		}
 
