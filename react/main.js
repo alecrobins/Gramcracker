@@ -7,7 +7,7 @@ var API = require('./utils/API.js');
 // Include the stores
 var SearchStore = require('./stores/SearchStore');
 var UserStore = require('./stores/UserStore');
-
+var PlaceStore = require('./stores/UserStore');
 
 var mountNode = document.getElementById("react-main-mount");
 

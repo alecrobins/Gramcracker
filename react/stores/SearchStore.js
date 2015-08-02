@@ -17,36 +17,38 @@ var _search = {
     _isDataLoaded = isDataLoaded;
   },
 
-  loadData: function(data) {
+  setData: function(data) {
     console.log("DATA LOADED");
     _searchData = $.extend({}, data[0]);;
   },
 
   // conduct a search with the given paraments
   search: function(searchData){
-    console.log("SENDING OFF");
+
+    // reset the search data
+    _searchData = {};
+
     var self = this;
 
     $.ajax({
       url: '/api/search',
       data: searchData,
       type: 'POST',
-    }).done(function(data){
+    })
+    .done(function(data){
       
-      self.loadData(data);
-      self.setIsDataLoaded(true);
-
-      console.log("DATA RECIEVED");
       console.log(data);
 
-      //TODO: need to send out change
+      self.setData(data);
+      self.setIsDataLoaded(true);
+
       SearchStore.emitChange();
 
-      // router.transitionTo('search', null, null);
-
-    }).fail(function(){
+    })
+    .fail(function(){
       console.log("FAILED");
     });
+
   },
 
 };
@@ -56,8 +58,25 @@ var SearchStore = assign(EventEmitter.prototype, {
 
   // Returns all shoes
   getData: function() {
-    console.log(_searchData);
     return _searchData;
+  },
+
+  // Returns all place
+  getPlace: function(placeID) {
+    
+    if($.isEmptyObject(_searchData)){
+      return null;
+    }
+
+    // NOTE: could be optimized to O(1) not O(n)
+    for(var i in _searchData){
+      if(_searchData[i].id === placeID){
+        return _searchData[i]
+      }
+    }
+
+    return null;
+
   },
 
   // Returns if the data has been loaded

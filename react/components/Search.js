@@ -3,6 +3,8 @@
 var React = require('react/addons');
 var SearchActions = require('../actions/SearchActions');
 var SearchStore = require('../stores/SearchStore');
+var SearchBar = require('./SearchBar');
+var PlaceContainer = require('./PlaceContainer');
 
 var Search = React.createClass({
 	
@@ -12,10 +14,15 @@ var Search = React.createClass({
 	
 	// Use getAppState method to set initial state
 	getInitialState: function() {
-		// TODO need to check that query is legitimate
 		// perform api search
 		SearchActions.search(this.props.query);
 		return SearchStore.getData();
+	},
+
+	componentWillReceiveProps: function(nextProps) {
+	 	console.log(nextProps);
+	 	this.setState({});
+		SearchActions.search(nextProps.query);
 	},
 
 	// Listen for changes
@@ -31,19 +38,35 @@ var Search = React.createClass({
 	// Update view state when change event is received
 	_onChange: function() {
 		this.setState(SearchStore.getData());
-
-		// TODO: check if data has been loaded
 	},
 
 	// Render the component
 	render: function(){
-		// get the query
-		console.log(this.state);
+		var display;
+		var self = this;
+		if ($.isEmptyObject(this.state)) {
+		  
+		  display = <h1>Loading</h1>;
+
+		} else {
+		  display =
+		   <div className = "places" >
+		  		<div className="map-container">Map</div>
+		  		<SearchBar isHome = {false} queryParams = {this.props.query} />
+		  		<div className = "results-container">
+			  		{Object.keys(this.state).map(function(i){
+			         return (
+			         	<PlaceContainer key={self.state.id} placeData={self.state[i]} />
+			         )
+			      })}
+		  		</div>
+		  	</div>
+		  	;
+		}
+ 	
 	 	return (
 	 		<div>
-		   	<div className = "places" >
-		   		<h1> Places </h1>
-		   	</div>
+		   	{display}
 	   	</div>
 		);
 	}

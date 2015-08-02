@@ -12,8 +12,8 @@ var HomePage = require('./components/HomePage');
 var routes = (
   <Route path="/" handler={App}>
   		<DefaultRoute name="home" handler={HomePage}/>
-   	<Route name="search" path="/search?" handler={Search} />//q=:query&location=:location
-   	<Route name="place" path="/place" handler={Place} />
+   	<Route name="search" path="/search?" handler={Search} />
+   	<Route name="place" path="/place/:id" handler={Place} />
   </Route>
 );
 

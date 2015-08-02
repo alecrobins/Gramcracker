@@ -1,6 +1,7 @@
 var _index = require('./index');
 var _search = require('./search');
 var _signin = require('./signin');
+var _place = require('./place');
 
 // Handle all the routes
 module.exports = function(app){
@@ -12,10 +13,12 @@ module.exports = function(app){
 	// INSTAGRAM SIGN IN
 	app.get("/api/callback", _signin.callback);
 	app.get("/api/signin", _signin.signin);
-	app.get("/api/test", _signin.test);
 
 	// SEARCH
 	app.post("/api/search", _search.search);
+
+	// PLACE SEARCH
+	app.get("/api/place", _place.place);
 
 	// catch 404 and forward to error handler
 	app.use(function(req, res, next) {

@@ -53,8 +53,6 @@ var Header = React.createClass({
 					<a onClick ={this.signin} > Log in </a>
 				</div>
 
-				<Link to="place"> Place </Link>
-
 			</header>
 		);
 	}
