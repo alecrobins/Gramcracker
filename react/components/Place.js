@@ -36,15 +36,12 @@ var Place = React.createClass({
 	render: function() {
 		var display;
 
-		console.log(this.state);
-
 		if($.isEmptyObject(this.state)){
 			display = <h1>Loading</h1>;
 		}else{
 			display =
 				<div className = "place-container">
-					<h3>{params.id}</h3>
-			   	<PlaceContainer key={self.state.id} placeData={self.state[i]} />
+			   	<PlaceContainer key={this.state.id} placeData={this.state} />
 			   </div>;
 		}
 

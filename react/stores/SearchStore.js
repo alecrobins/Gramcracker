@@ -36,8 +36,8 @@ var _search = {
       type: 'POST',
     })
     .done(function(data){
-      
-      console.log(data);
+
+      console.log("DATA RETURNED");
 
       self.setData(data);
       self.setIsDataLoaded(true);
@@ -56,8 +56,15 @@ var _search = {
 // Merge our store with Node's Event Emitter
 var SearchStore = assign(EventEmitter.prototype, {
 
-  // Returns all shoes
+  // Returns all 
   getData: function() {
+    console.log("GET _ DATA");
+    console.log(_searchData);
+    return _searchData;
+  },
+
+  // TEST
+  returnData: function(){
     return _searchData;
   },
 
@@ -118,7 +125,7 @@ AppDispatcher.register(function(payload) {
   }
   
   // If action was acted upon, emit change event
-  SearchStore.emitChange();
+  //SearchStore.emitChange();
 
   return true;
 

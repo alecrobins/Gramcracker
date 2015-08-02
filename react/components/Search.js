@@ -20,7 +20,6 @@ var Search = React.createClass({
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-	 	console.log(nextProps);
 	 	this.setState({});
 		SearchActions.search(nextProps.query);
 	},
@@ -37,11 +36,12 @@ var Search = React.createClass({
 
 	// Update view state when change event is received
 	_onChange: function() {
-		this.setState(SearchStore.getData());
+		this.setState(SearchStore.returnData());
 	},
 
 	// Render the component
 	render: function(){
+		console.log("RENDERING . . . ");
 		var display;
 		var self = this;
 		if ($.isEmptyObject(this.state)) {

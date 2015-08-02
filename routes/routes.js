@@ -18,7 +18,7 @@ module.exports = function(app){
 	app.post("/api/search", _search.search);
 
 	// PLACE SEARCH
-	app.get("/api/place", _place.place);
+	app.post("/api/place", _place.place);
 
 	// catch 404 and forward to error handler
 	app.use(function(req, res, next) {

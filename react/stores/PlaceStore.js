@@ -27,13 +27,13 @@ var _place = {
       $.ajax({
         url: '/api/place',
         data: {placeID: _placeID},
-        type: 'GET',
+        type: 'POST',
       })
       .done(function(data){
         
         console.log("RECIEVED ON CLIENT");
 
-        self.setData(data);
+        self.setData(data[0]);
 
         PlaceStore.emitChange();
 
@@ -43,6 +43,7 @@ var _place = {
       });
     }else{
       // place already exists in the store
+      console.log("CACHED");
       self.setData(place);
       PlaceStore.emitChange();
     }
