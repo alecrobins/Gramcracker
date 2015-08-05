@@ -1,16 +1,10 @@
 var gulp = require('gulp'),
-	argv = require('yargs').argv,
-    gulpif = require('gulp-if'),
-    nodemon = require('gulp-nodemon');
     sass = require('gulp-sass'),
-    concat = require('gulp-concat'),
-    rename = require('gulp-rename'),
-    uglify = require('gulp-uglify')
     jshint = require('gulp-jshint'),
     react = require('gulp-react');
-    minifyCSS = require('gulp-minify-css'),
     debug = require('gulp-debug'),
-    gutil = require('gulp-util'),
+    compass = require('gulp-compass'),
+    plumber = require('gulp-plumber'),
     stylish = require('jshint-stylish'),
     browserify = require('browserify'),
     watchify = require('watchify'),
@@ -20,33 +14,42 @@ var gulp = require('gulp'),
 var path = {
     OUT: 'main.js',
     ENTRY_POINT: './react/main.js',
-    DEST_SRC: './src/js/'
+    DEST_SRC: './src/js/',
+    CSS_OUT: './src/css/'
 };
 
-// Lint React Task
-// gulp.task('lint', function() {
-//     return gulp.src('./react/**/*.js')
-//            	.pipe(react())
-//            	.pipe(jshint())
-//            	.pipe(jshint.reporter("default", {verbose: true}))
-//            	.pipe(jshint.reporter(stylish))
-//            	.pipe(debug());
-// });
+// //error notification settings for plumber
+// var plumberErrorHandler = { errorHandler: notify.onError({
+//         title: notifyInfo.title,
+//         icon: notifyInfo.icon,
+//         message: "Error: <%= error.message %>"
+//     })
+// };
 
-// Compile Sass
-gulp.task('sass', function() {
-    return gulp.src('./src/scss/**/*.scss')
-	        	.pipe(sass())
-	        	.pipe(gulp.dest('./src/css/'))
-	        	.pipe(debug());
+gulp.task('styles', function() {
+  return gulp.src('src/scss/**/*.scss')
+    // .pipe(plumber(plumberErrorHandler))
+        .pipe(compass({
+            css: 'src/css',
+            sass: 'src/scss',
+            image: 'src/img'
+        }))
+    .pipe(gulp.dest(path.CSS_OUT))
+});
+
+// JS hint task
+gulp.task('jshint', function() {
+  gulp.src('./src/scripts/*.js')
+    // .pipe(plumber(plumberErrorHandler))
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
 });
 
 //Watch Files For Changes
 gulp.task('watch', function() {
     
-    // gulp.watch('react/**/*.js', ['lint']);
-    // gulp.watch('scss/*.scss', ['sass']);
-    
+    gulp.watch('./src/scss/**/*.scss', ['styles']);
+
     // Reactify 
     var watcher  = watchify(browserify({
         entries: [path.ENTRY_POINT],
@@ -68,4 +71,4 @@ gulp.task('watch', function() {
 });
 
 // Default Task
-gulp.task('default', ['watch']);
+gulp.task('default', ['styles', 'watch']);

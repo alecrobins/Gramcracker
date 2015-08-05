@@ -13,9 +13,12 @@
 
 **/
 
+$testcolor: purple;
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: $testcolor;
 }
 
 a {
@@ -35,3 +38,5 @@ input {
 	margin-bottom: 20px;	
 	display: block;
 }
+
+.map-container { height: 400px; }
