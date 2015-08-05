@@ -9,4 +9,5 @@ if (typeof window !== 'undefined') {
   Router.run(routes, Router.HistoryLocation, function (Handler) {
     React.render(<Handler/>, mountNode);
   });
+  
 }

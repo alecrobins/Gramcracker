@@ -41,22 +41,22 @@ gulp.task('assets', function() {
 
 
 // HTML pages
-gulp.task('pages', function() {
-  src.pages = ['src/pages/**/*.html'];
-  return gulp.src(src.pages)
-    .pipe($.changed(DEST, {
-      extension: '.html'
-    }))
-    .pipe($.if(RELEASE, $.htmlmin({
-      removeComments: true,
-      collapseWhitespace: true,
-      minifyJS: true
-    }), $.jsbeautifier()))
-    .pipe(gulp.dest(DEST))
-    .pipe($.size({
-      title: 'pages'
-    }));
-});
+// gulp.task('pages', function() {
+//   src.pages = ['src/pages/**/*.html'];
+//   return gulp.src(src.pages)
+//     .pipe($.changed(DEST, {
+//       extension: '.html'
+//     }))
+//     .pipe($.if(RELEASE, $.htmlmin({
+//       removeComments: true,
+//       collapseWhitespace: true,
+//       minifyJS: true
+//     }), $.jsbeautifier()))
+//     .pipe(gulp.dest(DEST))
+//     .pipe($.size({
+//       title: 'pages'
+//     }));
+// });
 
 // Bundle
 gulp.task('browserify', function(){
@@ -70,7 +70,7 @@ gulp.task('browserify', function(){
 
 // Build the app from source code
 gulp.task('build', ['clean'], function(cb) {
-  runSequence(['assets', 'pages', 'browserify'], function() {
+  runSequence(['assets', 'browserify'], function() { //'pages',
     // If watch flag is set
     if (watch) {
       gulp.watch(src.assets, ['assets']);

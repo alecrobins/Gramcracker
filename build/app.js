@@ -26412,6 +26412,7 @@ if (typeof window !== 'undefined') {
   Router.run(routes, Router.HistoryLocation, function (Handler) {
     React.render(React.createElement(Handler, null), mountNode);
   });
+  
 }
 
 },{"./routes":237,"react-router":32,"react/addons":47}],237:[function(require,module,exports){
