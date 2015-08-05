@@ -21,9 +21,10 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'handlebars');
-app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'handlebars');
+// app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
+app.use(express.static(__dirname + '/build'));
 
 // uncomment after placing your favicon in /public
 app.use(logger('dev'));
@@ -33,7 +34,7 @@ app.use(cookieParser());
 app.use(require('node-compass')({mode: 'expanded'}));
 
 // TODO: need to change this in production
-app.use("/", express.static(path.join(__dirname, 'src')));
+// app.use("/", express.static(path.join(__dirname, 'build')));
 
 // set up routes
 routes(app);

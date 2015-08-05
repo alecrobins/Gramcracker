@@ -1,74 +1,93 @@
 var gulp = require('gulp'),
-    sass = require('gulp-sass'),
-    jshint = require('gulp-jshint'),
-    react = require('gulp-react');
-    debug = require('gulp-debug'),
-    compass = require('gulp-compass'),
-    plumber = require('gulp-plumber'),
+    $ = require('gulp-load-plugins')(),
     stylish = require('jshint-stylish'),
+    del = require('del'),
+    runSequence = require('run-sequence'),
+    argv = require('minimist')(process.argv.slice(2)),
+    source = require('vinyl-source-stream'),
     browserify = require('browserify'),
-    watchify = require('watchify'),
-    reactify = require('reactify'),
-    source = require('vinyl-source-stream');
+    reactify = require('reactify');
 
-var path = {
-    OUT: 'main.js',
-    ENTRY_POINT: './react/main.js',
-    DEST_SRC: './src/js/',
-    CSS_OUT: './src/css/'
-};
 
-// //error notification settings for plumber
-// var plumberErrorHandler = { errorHandler: notify.onError({
-//         title: notifyInfo.title,
-//         icon: notifyInfo.icon,
-//         message: "Error: <%= error.message %>"
-//     })
-// };
+// Settings
+var DEST = './build'; // The build output folder
+var RELEASE = !!argv.release; // Minimize and optimize during a build?
+var WATCH = !!argv.watch; // Watch build process
 
-gulp.task('styles', function() {
-  return gulp.src('src/scss/**/*.scss')
-    // .pipe(plumber(plumberErrorHandler))
-        .pipe(compass({
-            css: 'src/css',
-            sass: 'src/scss',
-            image: 'src/img'
-        }))
-    .pipe(gulp.dest(path.CSS_OUT))
+var watch = false || WATCH;
+var src = {};
+
+// Clean up
+gulp.task('clean', del.bind(null, [DEST]));
+
+// Assets
+gulp.task('assets', function() {
+  src.assets = ['src/assets/**'];
+  // Out Put Location
+  var out = DEST + '/assets';
+
+  // Compile Scss
+  return gulp.src(src.assets)
+    .pipe($.changed(out, {
+      extension: '.css'
+    }))
+    .pipe($.if('*.scss', $.sass()))
+    .pipe(gulp.dest(out))
+    .pipe($.size({
+      title: 'assets'
+    }))
+    .pipe($.livereload());
 });
 
-// JS hint task
-gulp.task('jshint', function() {
-  gulp.src('./src/scripts/*.js')
-    // .pipe(plumber(plumberErrorHandler))
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'));
-});
 
-//Watch Files For Changes
-gulp.task('watch', function() {
-    
-    gulp.watch('./src/scss/**/*.scss', ['styles']);
-
-    // Reactify 
-    var watcher  = watchify(browserify({
-        entries: [path.ENTRY_POINT],
-        transform: [reactify],
-        debug: true,
-        cache: {}, packageCache: {}, fullPaths: true
+// HTML pages
+gulp.task('pages', function() {
+  src.pages = ['src/pages/**/*.html'];
+  return gulp.src(src.pages)
+    .pipe($.changed(DEST, {
+      extension: '.html'
+    }))
+    .pipe($.if(RELEASE, $.htmlmin({
+      removeComments: true,
+      collapseWhitespace: true,
+      minifyJS: true
+    }), $.jsbeautifier()))
+    .pipe(gulp.dest(DEST))
+    .pipe($.size({
+      title: 'pages'
     }));
+});
 
-    return watcher.on('update', function () {
-        watcher.bundle()
-            .pipe(source(path.OUT))
-            .pipe(gulp.dest(path.DEST_SRC))
-            console.log('Updated');
-        })
-        .bundle()
-        .pipe(source(path.OUT))
-        .pipe(gulp.dest(path.DEST_SRC));
+// Bundle
+gulp.task('browserify', function(){
+  var b = browserify();
+  b.transform(reactify); // use the reactify transform
+  b.add('./src/app.js');
+  return b.bundle()
+    .pipe(source('app.js'))
+    .pipe(gulp.dest('./build'));
+});
 
+// Build the app from source code
+gulp.task('build', ['clean'], function(cb) {
+  runSequence(['assets', 'pages', 'browserify'], function() {
+    // If watch flag is set
+    if (watch) {
+      gulp.watch(src.assets, ['assets']);
+      gulp.watch(src.pages, ['pages']);
+      gulp.watch('./src/**/*.js', ['browserify']);
+      gulp.watch(DEST + '/**/*.*', function(file) {
+        if (file.path.match(/[\.css]$/ig)) {
+          // Skip these extensions
+          return;
+        }
+        runSequence('browserify');
+      });
+      $.livereload.listen()
+    }
+    cb();
+  });
 });
 
 // Default Task
-gulp.task('default', ['styles', 'watch']);
+gulp.task('default', ['build']);

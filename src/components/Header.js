@@ -46,7 +46,7 @@ var Header = React.createClass({
 			<header className="header">
 				
 				<Link to="home">
-					<h1>Instagrammm</h1>
+					<h1>The New Instagrammm</h1>
 				</Link>
 
 				<div className="header__user">
