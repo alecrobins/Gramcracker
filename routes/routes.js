@@ -8,10 +8,6 @@ module.exports = function(app){
 
 	// PAGE ROUTES
 	app.get("/*", _index.home);
-	app.get("/place/*", function(req, res){
-		res.json({test: "world"});
-	});
-	// app.get("/search", _search.home);
 
 	// INSTAGRAM SIGN IN
 	app.get("/api/callback", _signin.callback);

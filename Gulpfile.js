@@ -6,7 +6,8 @@ var gulp = require('gulp'),
     argv = require('minimist')(process.argv.slice(2)),
     source = require('vinyl-source-stream'),
     browserify = require('browserify'),
-    reactify = require('reactify');
+    reactify = require('reactify')
+    path = require('path');
 
 
 // Settings
@@ -21,17 +22,35 @@ var src = {};
 gulp.task('clean', del.bind(null, [DEST]));
 
 // Assets
-gulp.task('assets', function() {
-  src.assets = ['src/assets/**'];
-  // Out Put Location
-  var out = DEST + '/assets';
+gulp.task('compass', function() {
+  src.assets = ['src/assets/scss/**/*'];
+
+  var out = path.join(__dirname, 'build/assets/');
 
   // Compile Scss
   return gulp.src(src.assets)
     .pipe($.changed(out, {
       extension: '.css'
     }))
-    .pipe($.if('*.scss', $.sass()))
+    .pipe($.compass({
+      project: path.join(__dirname, 'src/assets/scss/'),
+      css: out,
+      sass: path.join(__dirname, 'src/assets/scss/'),
+    }))
+    .pipe($.size({
+      title: 'assets'
+    }))
+    // .pipe($.livereload());
+});
+
+// Assets
+gulp.task('assets', function() {
+  src.assets = ['src/assets/img/**'];
+  // Out Put Location
+  var out = DEST + '/assets/img';
+
+  // Compile Scss
+  return gulp.src(src.assets)
     .pipe(gulp.dest(out))
     .pipe($.size({
       title: 'assets'
@@ -70,10 +89,10 @@ gulp.task('browserify', function(){
 
 // Build the app from source code
 gulp.task('build', ['clean'], function(cb) {
-  runSequence(['assets', 'browserify'], function() { //'pages',
+  runSequence(['assets', 'compass', 'browserify'], function() { //'pages',
     // If watch flag is set
     if (watch) {
-      gulp.watch(src.assets, ['assets']);
+      gulp.watch(src.assets, ['assets', 'compass']);
       gulp.watch(src.pages, ['pages']);
       gulp.watch('./src/**/*.js', ['browserify']);
       gulp.watch(DEST + '/**/*.*', function(file) {
@@ -83,7 +102,7 @@ gulp.task('build', ['clean'], function(cb) {
         }
         runSequence('browserify');
       });
-      $.livereload.listen()
+      // $.livereload.listen()
     }
     cb();
   });
