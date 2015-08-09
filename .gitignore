@@ -30,4 +30,4 @@ node_modules
 npm-debug.log
 
 # don't include the cache
-src/scss/.sass-cache
+src/assets/scss/.sass-cache
