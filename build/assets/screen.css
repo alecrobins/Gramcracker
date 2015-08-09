@@ -78,6 +78,34 @@ body {
 * Grid system for the media layout
 *
 **/
+.icon {
+  cursor: pointer;
+}
+
+.icon--white {
+  color: white;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5 {
+  font-weight: 700;
+}
+
+.h1 {
+  color: #115688;
+  font-size: 36px;
+}
+
+.h3__blue {
+  color: #115688;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .-flex {
   display: -webkit-flex;
   display: flex;
@@ -101,7 +129,7 @@ body {
 
 .header {
   position: relative;
-  height: 100px;
+  height: 75px;
   width: 100%;
   background: white;
 }
@@ -112,7 +140,7 @@ body {
   position: relative;
   max-width: 960px;
   margin: 0 auto;
-  padding: 30px;
+  padding: 20px 30px;
   box-sizing: border-box;
 }
 
@@ -122,18 +150,85 @@ body {
 }
 
 .header--logo__img {
-  width: 150px;
+  width: 130px;
+  display: block;
+  padding-top: 5px;
 }
 
 .header--user-container {
   margin-left: auto;
 }
 
-.homepage--container {
+.searchbar {
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.searchbar--input-container {
+  position: relative;
+  width: 40%;
+}
+
+.searchbar--input {
+  display: block;
+  width: 90%;
+  box-sizing: border-box;
+  height: 45px;
+  padding-right: 10px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  border: none;
+  background: white;
+  font-size: 18px;
+  outline: none;
+}
+
+#input-after, .searchbar--term:after, .searchbar--location:after {
+  position: absolute;
+  display: block;
+  left: 15px;
+  top: 12px;
+  color: #115688;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.searchbar--term input {
+  padding-left: 75px;
+}
+
+.searchbar--location input {
+  padding-left: 85px;
+}
+
+.searchbar--term:after {
+  content: "FIND";
+}
+
+.searchbar--location:after {
+  content: "NEAR";
+}
+
+.homepage--wrap {
   position: absolute;
   background: url("img/bg.jpg");
   left: 0;
   width: 100%;
-  top: 100px;
+  top: 75px;
   bottom: 0;
+  padding-top: 20vh;
+  box-sizing: border-box;
+}
+
+.homepage--container {
+  -webkit-justify-content: center;
+  justify-content: center;
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
 }

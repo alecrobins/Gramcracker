@@ -1,10 +1,19 @@
 .homepage {}
 
-.homepage--container {
+.homepage--wrap{
 	position: absolute;
 	background: url('img/bg.jpg');
 	left: 0;
 	width: 100%;
 	top: $headerHeight;
 	bottom: 0;
+	padding-top: 20vh;
+	box-sizing: border-box;
+}
+
+.homepage--container {
+	@include justify-content(center);
+	max-width: $maxPageWidth;
+	margin: 0 auto;
+	position: relative;
 }

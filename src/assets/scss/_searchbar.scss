@@ -1,0 +1,51 @@
+.searchbar {
+	@include align-items(center);
+	@include justify-content(center);
+	width: 100%;
+}
+
+.searchbar--input-container {
+	position: relative;
+	width: 40%;
+}
+
+.searchbar--input {
+	display: block;
+	width: 90%;
+	box-sizing: border-box;
+	height: 45px;
+	padding-right: 10px;
+	@include border-radius(5px);
+	border: none;
+	background: white;
+	font-size: 18px;
+	outline: none;
+}
+
+#input-after {
+	position: absolute;
+	display: block;
+	left: 15px;
+	top: 12px;
+	color: $blue;
+	font-size: 22px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.searchbar--term input {
+	padding-left: 75px;
+}
+
+.searchbar--location input {
+	padding-left: 85px;
+}
+
+.searchbar--term:after {
+	@extend #input-after;
+	content: "FIND";
+}
+.searchbar--location:after {
+	@extend #input-after;
+	content: "NEAR";
+}

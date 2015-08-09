@@ -10,7 +10,7 @@
 	position: relative;
 	max-width: $maxPageWidth;
 	margin: 0 auto;
-	padding: 30px;
+	padding: 20px 30px;
 	box-sizing: border-box;
 }
 
@@ -19,7 +19,9 @@
 }
 
 .header--logo__img {
-	width: 150px;
+	width: 130px;
+	display: block;
+	padding-top: 5px;
 }
 
 .header--user-container{

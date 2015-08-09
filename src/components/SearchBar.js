@@ -10,12 +10,41 @@ var SearchBar = React.createClass({
    	router: React.PropTypes.func.isRequired
  	},
 
+ 	// TODO: need to fire an event on enter key down.
+ 	componentDidMount: function() {
+      $(".searchbar--input").on('keydown', this.handleSearchKeyDown);
+   },
+
+   componentWillUnMount: function() {
+      $(".searchbar--input").off('keydown', this.handleSearchKeyDown);
+   },
+
+   handleSearchKeyDown: function(e){
+   	// search on enter
+   	if(e.keyCode === 13){
+   		this.handleSubmit(e);
+   	}
+   },
+
 	handleSubmit: function(e){
 		e.preventDefault();
 		var self = this;
 		var searchData = {
 			term: React.findDOMNode(this.refs.term).value.trim(),
 			location: React.findDOMNode(this.refs.location).value.trim(),
+		};
+
+
+		var completeSearch = function(){
+			// delete the null
+			for(var i in searchData){
+				if(searchData[i] === ""){
+					delete searchData[i];
+				}
+			}
+
+			// send off the search with searchData as the query
+     		self.context.router.transitionTo('search', null, searchData);
 		};
 
 		// if search is empty then get current location
@@ -55,31 +84,22 @@ var SearchBar = React.createClass({
       	completeSearch();		
 		}
 
-		var completeSearch = function(){
-			// delete the null
-			for(var i in searchData){
-				if(searchData[i] === ""){
-					delete searchData[i];
-				}
-			}
-
-			// send off the search with searchData as the query
-     		self.context.router.transitionTo('search', null, searchData);
-		};
 
 	},
 
 	render: function() {
 		return (
-			<div className = "home--search-container">
-			
-				<label htmlFor="term">Term</label>
-				<input type="text" name="term" ref="term" />
-					
-				<label htmlFor="location">Location</label>
-				<input type="text" name="location" ref="location" />	
-					
-				<i className="fa  fa-search fa-3x" onClick={this.handleSubmit}></i>
+			<div className = "searchbar -flex">
+				
+				<div className="searchbar--term searchbar--input-container">
+					<input className="searchbar--input" type="text" name="term" ref="term" />
+				</div>
+
+				<div className="searchbar--location searchbar--input-container">
+					<input className="searchbar--input" type="text" name="location" ref="location" />	
+				</div>
+				
+				<i className="searchbar--icon icon icon--white fa  fa-search fa-2x" onClick={this.handleSubmit}></i>
 
 			</div>
 		);

@@ -26048,8 +26048,10 @@ var HomePage = React.createClass({displayName: "HomePage",
 
 	render: function() {
 		return (
-			React.createElement("div", {className: "homepage--container"}, 
-				React.createElement(SearchBar, null)
+			React.createElement("div", {className: "homepage--wrap"}, 
+				React.createElement("div", {className: "homepage--container -flex"}, 
+					React.createElement(SearchBar, null)
+				)
 			)
 		);
 	}
@@ -26285,12 +26287,41 @@ var SearchBar = React.createClass({displayName: "SearchBar",
    	router: React.PropTypes.func.isRequired
  	},
 
+ 	// TODO: need to fire an event on enter key down.
+ 	componentDidMount: function() {
+      $(".searchbar--input").on('keydown', this.handleSearchKeyDown);
+   },
+
+   componentWillUnMount: function() {
+      $(".searchbar--input").off('keydown', this.handleSearchKeyDown);
+   },
+
+   handleSearchKeyDown: function(e){
+   	// search on enter
+   	if(e.keyCode === 13){
+   		this.handleSubmit(e);
+   	}
+   },
+
 	handleSubmit: function(e){
 		e.preventDefault();
 		var self = this;
 		var searchData = {
 			term: React.findDOMNode(this.refs.term).value.trim(),
 			location: React.findDOMNode(this.refs.location).value.trim(),
+		};
+
+
+		var completeSearch = function(){
+			// delete the null
+			for(var i in searchData){
+				if(searchData[i] === ""){
+					delete searchData[i];
+				}
+			}
+
+			// send off the search with searchData as the query
+     		self.context.router.transitionTo('search', null, searchData);
 		};
 
 		// if search is empty then get current location
@@ -26330,31 +26361,22 @@ var SearchBar = React.createClass({displayName: "SearchBar",
       	completeSearch();		
 		}
 
-		var completeSearch = function(){
-			// delete the null
-			for(var i in searchData){
-				if(searchData[i] === ""){
-					delete searchData[i];
-				}
-			}
-
-			// send off the search with searchData as the query
-     		self.context.router.transitionTo('search', null, searchData);
-		};
 
 	},
 
 	render: function() {
 		return (
-			React.createElement("div", {className: "home--search-container"}, 
-			
-				React.createElement("label", {htmlFor: "term"}, "Term"), 
-				React.createElement("input", {type: "text", name: "term", ref: "term"}), 
-					
-				React.createElement("label", {htmlFor: "location"}, "Location"), 
-				React.createElement("input", {type: "text", name: "location", ref: "location"}), 	
-					
-				React.createElement("i", {className: "fa  fa-search fa-3x", onClick: this.handleSubmit})
+			React.createElement("div", {className: "searchbar -flex"}, 
+				
+				React.createElement("div", {className: "searchbar--term searchbar--input-container"}, 
+					React.createElement("input", {className: "searchbar--input", type: "text", name: "term", ref: "term"})
+				), 
+
+				React.createElement("div", {className: "searchbar--location searchbar--input-container"}, 
+					React.createElement("input", {className: "searchbar--input", type: "text", name: "location", ref: "location"})	
+				), 
+				
+				React.createElement("i", {className: "searchbar--icon icon icon--white fa  fa-search fa-2x", onClick: this.handleSubmit})
 
 			)
 		);
