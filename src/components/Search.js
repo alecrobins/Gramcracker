@@ -17,14 +17,11 @@ var Search = React.createClass({
 	
 	// Use getAppState method to set initial state
 	getInitialState: function() {
-		// perform api search
-		SearchActions.search(this.props.query);
-		return SearchStore.getData();
+		return SearchStore.returnData();
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-	 	this.setState({}); 
-		SearchActions.search(nextProps.query);
+		this.getEntityDataIfNeeded();
 	},
 
 	// Listen for changes
@@ -33,14 +30,13 @@ var Search = React.createClass({
 	},
 
 	// Unbind change listener
-	componentWillMount: function() {
-		this.setState(SearchStore.returnData());
-	},
-
-	// Unbind change listener
 	componentWillUnmount: function() {
 		SearchStore.removeChangeListener(this._onChange);
 	},
+
+	getEntityDataIfNeeded: function(props) {
+      // props changed !
+    },
 
 	// Update view state when change event is received
 	_onChange: function() {
@@ -49,10 +45,11 @@ var Search = React.createClass({
 
 	// Render the component
 	render: function(){
+		window.testSearchStore = SearchStore;
+
 		var display;
 		var self = this;
-		console.log(this.state);
-		if ($.isEmptyObject(this.state)) {
+		if (SearchStore.getFetchingState() === "fetching") {
 		  
 		  display = <h1>Loading</h1>;
 

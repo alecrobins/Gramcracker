@@ -10,7 +10,6 @@ var SearchBar = React.createClass({
    	router: React.PropTypes.func.isRequired
  	},
 
- 	// TODO: need to fire an event on enter key down.
  	componentDidMount: function() {
       $(".searchbar--input").on('keydown', this.handleSearchKeyDown);
    },
@@ -29,6 +28,7 @@ var SearchBar = React.createClass({
 	handleSubmit: function(e){
 		e.preventDefault();
 		var self = this;
+
 		var searchData = {
 			term: React.findDOMNode(this.refs.term).value.trim(),
 			location: React.findDOMNode(this.refs.location).value.trim(),
@@ -42,8 +42,9 @@ var SearchBar = React.createClass({
 					delete searchData[i];
 				}
 			}
-
-			// send off the search with searchData as the query
+         // send off search action
+         SearchActions.sendSearchData(searchData);
+			// change routes 
      		self.context.router.transitionTo('search', null, searchData);
 		};
 

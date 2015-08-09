@@ -8,55 +8,31 @@ var router = require('../router');
 
 // Internal object of our object
 var _searchData = {};
-var _isDataLoaded = false;
+var _fetchingState = "idle";
 
 // Method to load shoes from action data
 var _search = {
 
-  setIsDataLoaded: function(isDataLoaded){
-    _isDataLoaded = isDataLoaded;
-  },
-
   setData: function(data) {
-    console.log("SearchStore: SET DATA LOADED");
-    _searchData = $.extend({}, data[0]);;
+    _searchData = $.extend({}, data.searchData[0]);;
   },
 
-  // conduct a search with the given paraments
-  search: function(searchData){
+  setFetchingState: function(state){
+    _fetchingState = state;
+  },
 
-    // reset the search data
-    _searchData = {};
+  getFetchingState: function(){
+    return _fetchingState;
+  },
 
-    var self = this;
-
-    $.ajax({
-      url: '/api/search',
-      data: searchData,
-      type: 'POST',
-    })
-    .done(function(data){
-
-      console.log("DATA RETURNED");
-
-      self.setData(data);
-      self.setIsDataLoaded(true);
-
-      SearchStore.emitChange();
-
-    })
-    .fail(function(){
-      console.log("FAILED");
-    });
-
+  getSearchData: function(){
+    return _searchData;
   },
 
   getPlace: function(placeID){
-    if($.isEmptyObject(_searchData)){
-      return null;
-    }
+    if($.isEmptyObject(_searchData)){ return null; }
 
-    // NOTE: could be optimized to O(1) not O(n)
+    // TODO: could be optimized to O(1) not O(n)
     for(var i in _searchData){
       if(_searchData[i].id === placeID){
         return _searchData[i]
@@ -71,28 +47,33 @@ var _search = {
 // Merge our store with Node's Event Emitter
 var SearchStore = assign(EventEmitter.prototype, {
 
-  // Returns all 
-  getData: function() {
-    console.log("SearchStore: GET _ DATA");
+  getData: function(){
+    return _search.getSearchData();
+  },
+
+  returnData: function(){
     return _searchData;
   },
 
-  // TEST
-  returnData: function(){
-    console.log("SearchStore: RETURN _ DATA");
-    return _searchData;
+  getFetchingState: function(){
+    return _search.getFetchingState();
   },
 
   // Returns all place
   getPlace: function(placeID) {
-    console.log("SearchStore: GET PLACE");
     return _search.getPlace(placeID);
-
   },
 
-  // Returns if the data has been loaded
-  isDataLoaded: function(){
-    return _isDataLoaded;
+  sendSearchStarted: function(){
+    // clear the previously cached search data
+    _searchData = {};
+    _search.setFetchingState("fetching");
+  },
+  
+  sendSearchCompleted: function(data){
+    // clear the previously cached search data
+    _search.setData(data);
+    _search.setFetchingState("idle");
   },
 
   emitChange: function() {
@@ -116,8 +97,12 @@ AppDispatcher.register(function(payload) {
   // Define what to do for certain actions
   switch(action.actionType) {
     
-    case SearchStoreConstants.SEARCH:
-      _search.search(action.searchData);
+    case SearchStoreConstants.SEND_SEARCH:
+      SearchStore.sendSearchStarted();
+      break;
+
+    case SearchStoreConstants.SEND_SEARCH_COMPLETED:
+      SearchStore.sendSearchCompleted(action);
       break;
 
     default:

@@ -3,10 +3,24 @@ var SearchStoreConstants = require('../constants/SearchStoreConstants');
 
 var SearchActions = {
 
-  	search: function(searchData) {
+    searchError: function(error){
+      AppDispatcher.handleAction({
+        actionType: SearchStoreConstants.SEARCH_ERROR,
+        error: error
+      });
+    },
+
+    receiveSearchData: function(searchData){
+      AppDispatcher.handleAction({
+        actionType: SearchStoreConstants.SEND_SEARCH_COMPLETED,
+        searchData: searchData
+      });
+    },
+
+  	sendSearchData: function(searchQuery) {
     	AppDispatcher.handleAction({
-      	actionType: SearchStoreConstants.SEARCH,
-      	searchData: searchData
+      	actionType: SearchStoreConstants.SEND_SEARCH,
+      	searchQuery: searchQuery
     	});
   	},
 

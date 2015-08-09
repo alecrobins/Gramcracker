@@ -25754,7 +25754,7 @@ var LoginActions = {
 
 module.exports = LoginActions;
 
-},{"../constants/UserStoreConstants":234,"../dispatcher/AppDispatcher":235}],221:[function(require,module,exports){
+},{"../constants/UserStoreConstants":235,"../dispatcher/AppDispatcher":236}],221:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var PlaceStoreConstants = require('../constants/SearchStoreConstants');
 
@@ -25771,16 +25771,30 @@ var PlaceActions = {
 
 module.exports = PlaceActions;
 
-},{"../constants/SearchStoreConstants":233,"../dispatcher/AppDispatcher":235}],222:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":234,"../dispatcher/AppDispatcher":236}],222:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var SearchStoreConstants = require('../constants/SearchStoreConstants');
 
 var SearchActions = {
 
-  	search: function(searchData) {
+    searchError: function(error){
+      AppDispatcher.handleAction({
+        actionType: SearchStoreConstants.SEARCH_ERROR,
+        error: error
+      });
+    },
+
+    receiveSearchData: function(searchData){
+      AppDispatcher.handleAction({
+        actionType: SearchStoreConstants.SEND_SEARCH_COMPLETED,
+        searchData: searchData
+      });
+    },
+
+  	sendSearchData: function(searchQuery) {
     	AppDispatcher.handleAction({
-      	actionType: SearchStoreConstants.SEARCH,
-      	searchData: searchData
+      	actionType: SearchStoreConstants.SEND_SEARCH,
+      	searchQuery: searchQuery
     	});
   	},
 
@@ -25795,13 +25809,66 @@ var SearchActions = {
 
 module.exports = SearchActions;
 
-},{"../constants/SearchStoreConstants":233,"../dispatcher/AppDispatcher":235}],223:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":234,"../dispatcher/AppDispatcher":236}],223:[function(require,module,exports){
+var SearchStoreConstants = require('../constants/SearchStoreConstants');
+var SearchActions = require('../actions/SearchActions');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+
+var Api = {
+
+  // conduct a search with the given paraments
+  search: function(data){
+    var searchData = {
+      location: data.searchQuery.location,
+      term: data.searchQuery.term
+    }
+
+    $.ajax({
+      url: '/api/search',
+      data: searchData,
+      type: 'POST',
+    })
+    .done(function(data){
+      SearchActions.receiveSearchData(data);
+    })
+    .fail(function(){
+      console.log("FAILED");
+      SearchActions.searchError("Failed the search");
+    });
+
+  },
+
+};
+
+
+// Register dispatcher callback
+AppDispatcher.register(function(payload) {
+  var action = payload.action;
+
+  // Define what to do for certain actions
+  switch(action.actionType) {
+    
+    case SearchStoreConstants.SEND_SEARCH:
+      Api.search(action);
+      break;
+
+    default:
+      return true;
+  }
+  
+  return true;
+
+});
+
+module.exports = Api;
+
+},{"../actions/SearchActions":222,"../constants/SearchStoreConstants":234,"../dispatcher/AppDispatcher":236}],224:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react/addons');
 var router = require('./router');
-var API = require('./utils/API.js');
+var Api = require('./api/Api');
 
-},{"./router":236,"./utils/API.js":241,"react/addons":47}],224:[function(require,module,exports){
+},{"./api/Api":223,"./router":237,"react/addons":47}],225:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -25839,7 +25906,7 @@ module.exports = App;
 //     );
 // }
 
-},{"./Header":226,"./HomePage":227,"react-router":32,"react/addons":47}],225:[function(require,module,exports){
+},{"./Header":227,"./HomePage":228,"react-router":32,"react/addons":47}],226:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -25969,7 +26036,7 @@ var GoogleMap = React.createClass({displayName: "GoogleMap",
 
 module.exports = GoogleMap;
 
-},{"node-uuid":6,"react/addons":47}],226:[function(require,module,exports){
+},{"node-uuid":6,"react/addons":47}],227:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26034,7 +26101,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header;
 
-},{"../actions/LoginActions":220,"../stores/UserStore":240,"react-router":32,"react/addons":47}],227:[function(require,module,exports){
+},{"../actions/LoginActions":220,"../stores/UserStore":241,"react-router":32,"react/addons":47}],228:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26059,7 +26126,7 @@ var HomePage = React.createClass({displayName: "HomePage",
 
 module.exports = HomePage;
 
-},{"./SearchBar":232,"react/addons":47}],228:[function(require,module,exports){
+},{"./SearchBar":233,"react/addons":47}],229:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26122,7 +26189,7 @@ var Place = React.createClass({displayName: "Place",
 
 module.exports = Place;
 
-},{"../actions/PlaceActions":221,"../stores/PlaceStore":238,"./GoogleMap":225,"./PlaceContainer":229,"node-uuid":6,"react/addons":47}],229:[function(require,module,exports){
+},{"../actions/PlaceActions":221,"../stores/PlaceStore":239,"./GoogleMap":226,"./PlaceContainer":230,"node-uuid":6,"react/addons":47}],230:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26164,7 +26231,7 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 
 module.exports = PlaceContainer;
 
-},{"../router":236,"./PlacePhoto":230,"node-uuid":6,"react/addons":47}],230:[function(require,module,exports){
+},{"../router":237,"./PlacePhoto":231,"node-uuid":6,"react/addons":47}],231:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26188,7 +26255,7 @@ var PlacePhoto = React.createClass({displayName: "PlacePhoto",
 
 module.exports = PlacePhoto;
 
-},{"react/addons":47}],231:[function(require,module,exports){
+},{"react/addons":47}],232:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26208,14 +26275,11 @@ var Search = React.createClass({displayName: "Search",
 	
 	// Use getAppState method to set initial state
 	getInitialState: function() {
-		// perform api search
-		SearchActions.search(this.props.query);
-		return SearchStore.getData();
+		return SearchStore.returnData();
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-	 	this.setState({}); 
-		SearchActions.search(nextProps.query);
+		this.getEntityDataIfNeeded();
 	},
 
 	// Listen for changes
@@ -26224,14 +26288,13 @@ var Search = React.createClass({displayName: "Search",
 	},
 
 	// Unbind change listener
-	componentWillMount: function() {
-		this.setState(SearchStore.returnData());
-	},
-
-	// Unbind change listener
 	componentWillUnmount: function() {
 		SearchStore.removeChangeListener(this._onChange);
 	},
+
+	getEntityDataIfNeeded: function(props) {
+      // props changed !
+    },
 
 	// Update view state when change event is received
 	_onChange: function() {
@@ -26240,10 +26303,11 @@ var Search = React.createClass({displayName: "Search",
 
 	// Render the component
 	render: function(){
+		window.testSearchStore = SearchStore;
+
 		var display;
 		var self = this;
-		console.log(this.state);
-		if ($.isEmptyObject(this.state)) {
+		if (SearchStore.getFetchingState() === "fetching") {
 		  
 		  display = React.createElement("h1", null, "Loading");
 
@@ -26274,7 +26338,7 @@ var Search = React.createClass({displayName: "Search",
 
 module.exports = Search;
 
-},{"../actions/SearchActions":222,"../router":236,"../stores/SearchStore":239,"./GoogleMap":225,"./PlaceContainer":229,"./SearchBar":232,"node-uuid":6,"react/addons":47}],232:[function(require,module,exports){
+},{"../actions/SearchActions":222,"../router":237,"../stores/SearchStore":240,"./GoogleMap":226,"./PlaceContainer":230,"./SearchBar":233,"node-uuid":6,"react/addons":47}],233:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26287,7 +26351,6 @@ var SearchBar = React.createClass({displayName: "SearchBar",
    	router: React.PropTypes.func.isRequired
  	},
 
- 	// TODO: need to fire an event on enter key down.
  	componentDidMount: function() {
       $(".searchbar--input").on('keydown', this.handleSearchKeyDown);
    },
@@ -26306,6 +26369,7 @@ var SearchBar = React.createClass({displayName: "SearchBar",
 	handleSubmit: function(e){
 		e.preventDefault();
 		var self = this;
+
 		var searchData = {
 			term: React.findDOMNode(this.refs.term).value.trim(),
 			location: React.findDOMNode(this.refs.location).value.trim(),
@@ -26319,8 +26383,9 @@ var SearchBar = React.createClass({displayName: "SearchBar",
 					delete searchData[i];
 				}
 			}
-
-			// send off the search with searchData as the query
+         // send off search action
+         SearchActions.sendSearchData(searchData);
+			// change routes 
      		self.context.router.transitionTo('search', null, searchData);
 		};
 
@@ -26385,15 +26450,18 @@ var SearchBar = React.createClass({displayName: "SearchBar",
 
 module.exports = SearchBar;
 
-},{"../actions/SearchActions":222,"../router":236,"react/addons":47}],233:[function(require,module,exports){
+},{"../actions/SearchActions":222,"../router":237,"react/addons":47}],234:[function(require,module,exports){
 var SearchStoreConstants = {
-	SEARCH: 'SEARCH',
+	SEND_SEARCH: 'SEND_SEARCH',
+	SEND_SEARCH_COMPLETED: 'SEND_SEARCH_COMPLETED',
+	SEARCH_ERROR: 'SEARCH_ERROR',
+	RECEIVE_SEARCH: 'RECEIVE_SEARCH',
 	IS_DATA_LOADED: 'IS_DATA_LOADED'
 };
 
 module.exports = SearchStoreConstants;
 
-},{}],234:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 var UserStoreConstants = {
 	SIGN_IN: 'SIGN_IN',
 	SIGN_OUT: 'SIGN_OUT'
@@ -26401,7 +26469,7 @@ var UserStoreConstants = {
 
 module.exports = UserStoreConstants;
 
-},{}],235:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var AppDispatcher = new Dispatcher();
 
@@ -26414,7 +26482,7 @@ AppDispatcher.handleAction = function(action) {
 
 module.exports = AppDispatcher;
 
-},{"flux":3}],236:[function(require,module,exports){
+},{"flux":3}],237:[function(require,module,exports){
 var routes = require('./routes'),
     Router = require('react-router');
 var React = require('react/addons');
@@ -26429,7 +26497,7 @@ if (typeof window !== 'undefined') {
   
 }
 
-},{"./routes":237,"react-router":32,"react/addons":47}],237:[function(require,module,exports){
+},{"./routes":238,"react-router":32,"react/addons":47}],238:[function(require,module,exports){
 var React = require('react/addons');
 var Router = require('react-router');
 var Route = Router.Route;
@@ -26451,7 +26519,7 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/App":224,"./components/HomePage":227,"./components/Place":228,"./components/Search":231,"react-router":32,"react/addons":47}],238:[function(require,module,exports){
+},{"./components/App":225,"./components/HomePage":228,"./components/Place":229,"./components/Search":232,"react-router":32,"react/addons":47}],239:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -26552,7 +26620,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = PlaceStore;
 
-},{"../constants/SearchStoreConstants":233,"../dispatcher/AppDispatcher":235,"../router":236,"./SearchStore":239,"events":2,"object-assign":7}],239:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":234,"../dispatcher/AppDispatcher":236,"../router":237,"./SearchStore":240,"events":2,"object-assign":7}],240:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -26563,55 +26631,31 @@ var router = require('../router');
 
 // Internal object of our object
 var _searchData = {};
-var _isDataLoaded = false;
+var _fetchingState = "idle";
 
 // Method to load shoes from action data
 var _search = {
 
-  setIsDataLoaded: function(isDataLoaded){
-    _isDataLoaded = isDataLoaded;
-  },
-
   setData: function(data) {
-    console.log("SearchStore: SET DATA LOADED");
-    _searchData = $.extend({}, data[0]);;
+    _searchData = $.extend({}, data.searchData[0]);;
   },
 
-  // conduct a search with the given paraments
-  search: function(searchData){
+  setFetchingState: function(state){
+    _fetchingState = state;
+  },
 
-    // reset the search data
-    _searchData = {};
+  getFetchingState: function(){
+    return _fetchingState;
+  },
 
-    var self = this;
-
-    $.ajax({
-      url: '/api/search',
-      data: searchData,
-      type: 'POST',
-    })
-    .done(function(data){
-
-      console.log("DATA RETURNED");
-
-      self.setData(data);
-      self.setIsDataLoaded(true);
-
-      SearchStore.emitChange();
-
-    })
-    .fail(function(){
-      console.log("FAILED");
-    });
-
+  getSearchData: function(){
+    return _searchData;
   },
 
   getPlace: function(placeID){
-    if($.isEmptyObject(_searchData)){
-      return null;
-    }
+    if($.isEmptyObject(_searchData)){ return null; }
 
-    // NOTE: could be optimized to O(1) not O(n)
+    // TODO: could be optimized to O(1) not O(n)
     for(var i in _searchData){
       if(_searchData[i].id === placeID){
         return _searchData[i]
@@ -26626,28 +26670,33 @@ var _search = {
 // Merge our store with Node's Event Emitter
 var SearchStore = assign(EventEmitter.prototype, {
 
-  // Returns all 
-  getData: function() {
-    console.log("SearchStore: GET _ DATA");
+  getData: function(){
+    return _search.getSearchData();
+  },
+
+  returnData: function(){
     return _searchData;
   },
 
-  // TEST
-  returnData: function(){
-    console.log("SearchStore: RETURN _ DATA");
-    return _searchData;
+  getFetchingState: function(){
+    return _search.getFetchingState();
   },
 
   // Returns all place
   getPlace: function(placeID) {
-    console.log("SearchStore: GET PLACE");
     return _search.getPlace(placeID);
-
   },
 
-  // Returns if the data has been loaded
-  isDataLoaded: function(){
-    return _isDataLoaded;
+  sendSearchStarted: function(){
+    // clear the previously cached search data
+    _searchData = {};
+    _search.setFetchingState("fetching");
+  },
+  
+  sendSearchCompleted: function(data){
+    // clear the previously cached search data
+    _search.setData(data);
+    _search.setFetchingState("idle");
   },
 
   emitChange: function() {
@@ -26671,8 +26720,12 @@ AppDispatcher.register(function(payload) {
   // Define what to do for certain actions
   switch(action.actionType) {
     
-    case SearchStoreConstants.SEARCH:
-      _search.search(action.searchData);
+    case SearchStoreConstants.SEND_SEARCH:
+      SearchStore.sendSearchStarted();
+      break;
+
+    case SearchStoreConstants.SEND_SEARCH_COMPLETED:
+      SearchStore.sendSearchCompleted(action);
       break;
 
     default:
@@ -26688,7 +26741,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = SearchStore;
 
-},{"../constants/SearchStoreConstants":233,"../dispatcher/AppDispatcher":235,"../router":236,"events":2,"object-assign":7}],240:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":234,"../dispatcher/AppDispatcher":236,"../router":237,"events":2,"object-assign":7}],241:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
@@ -26757,6 +26810,4 @@ AppDispatcher.register(function(payload) {
 
 module.exports = UserStore;
 
-},{"../constants/UserStoreConstants":234,"../dispatcher/AppDispatcher":235,"events":2,"object-assign":7}],241:[function(require,module,exports){
-
-},{}]},{},[223]);
+},{"../constants/UserStoreConstants":235,"../dispatcher/AppDispatcher":236,"events":2,"object-assign":7}]},{},[224]);
