@@ -15,6 +15,11 @@ var PlaceContainer = React.createClass({
      	this.context.router.transitionTo('place', {id: this.props.placeData.id}, null);
   	},
 
+  	componentDidMount: function(){
+  		// set up the slider once component has been mounted
+  		$('.single-item').slick();
+  	},
+
 	render: function() {
 		var self = this;
 

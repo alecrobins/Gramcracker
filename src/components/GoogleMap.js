@@ -85,7 +85,6 @@ var GoogleMap = React.createClass({
 	  		// add market to map
 	  		var marker = new google.maps.Marker({
 		    	position: location,
-		    	label: i,
 		    	animation: google.maps.Animation.DROP,
 		    	map: map,
 		    	title: placeData[i].name

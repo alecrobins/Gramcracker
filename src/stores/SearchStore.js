@@ -9,6 +9,8 @@ var router = require('../router');
 // Internal object of our object
 var _searchData = {};
 var _fetchingState = "idle";
+// flag to determine is a search has been fired off yet
+var _isLoaded = false;
 
 // Method to load shoes from action data
 var _search = {
@@ -65,9 +67,15 @@ var SearchStore = assign(EventEmitter.prototype, {
   },
 
   sendSearchStarted: function(){
+    _isLoaded = true;
+
     // clear the previously cached search data
     _searchData = {};
     _search.setFetchingState("fetching");
+  },
+
+  isLoaded: function(){
+    return _isLoaded;
   },
   
   sendSearchCompleted: function(data){

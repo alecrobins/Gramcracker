@@ -50,7 +50,6 @@ var Place = React.createClass({
 
 		return (
 			<div className="PlaceView">
-				<h1>Place View</h1>
 				{display}
 			</div>
 		);

@@ -3,6 +3,7 @@
 var React = require('react/addons');
 var SearchActions = require('../actions/SearchActions');
 var SearchStore = require('../stores/SearchStore');
+var Api = require('../api/Api');
 var SearchBar = require('./SearchBar');
 var PlaceContainer = require('./PlaceContainer');
 var GoogleMap = require('./GoogleMap');
@@ -22,6 +23,19 @@ var Search = React.createClass({
 
 	componentWillReceiveProps: function(nextProps) {
 		this.getEntityDataIfNeeded();
+	},
+
+	componentWillMount: function(){
+		// request data if search store hasn't loaded any data yet
+		if(!SearchStore.isLoaded()){
+			
+			var searchData = {
+				location: this.props.query.location,
+				term: this.props.query.term,
+			};
+
+         SearchActions.sendSearchData(searchData);
+		}
 	},
 
 	// Listen for changes
