@@ -11,7 +11,7 @@ var HomePage = React.createClass({
 
 	render: function() {
 		return (
-			<div className = "home--container">
+			<div className = "homepage--container">
 				<SearchBar />
 			</div>
 		);

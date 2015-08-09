@@ -20,6 +20,7 @@ var GoogleMap = React.createClass({
 
 		var mapOptions = {
 			zoom: 15,
+			scrollwheel: false,
 			center: new google.maps.LatLng(location.lat,location.lng),
 			panControl: true,
 			panControlOptions: {
@@ -53,6 +54,7 @@ var GoogleMap = React.createClass({
   	initMapList: function(){
   		var mapOptions = {
 			panControl: true,
+			scrollwheel: false,
 			panControlOptions: {
 		     position: google.maps.ControlPosition.LEFT_BOTTOM
 			},

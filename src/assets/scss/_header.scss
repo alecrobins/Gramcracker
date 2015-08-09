@@ -1,0 +1,27 @@
+.header{
+	position: relative;
+	height: $headerHeight;
+	width: 100%;
+	background: white;
+}
+
+.header__wrap {
+	@include align-items(center);
+	position: relative;
+	max-width: $maxPageWidth;
+	margin: 0 auto;
+	padding: 30px;
+	box-sizing: border-box;
+}
+
+.header--logo-container{
+	@include align-self(flex-start);
+}
+
+.header--logo__img {
+	width: 150px;
+}
+
+.header--user-container{
+	margin-left: auto;
+}

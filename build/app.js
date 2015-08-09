@@ -25862,6 +25862,7 @@ var GoogleMap = React.createClass({displayName: "GoogleMap",
 
 		var mapOptions = {
 			zoom: 15,
+			scrollwheel: false,
 			center: new google.maps.LatLng(location.lat,location.lng),
 			panControl: true,
 			panControlOptions: {
@@ -25895,6 +25896,7 @@ var GoogleMap = React.createClass({displayName: "GoogleMap",
   	initMapList: function(){
   		var mapOptions = {
 			panControl: true,
+			scrollwheel: false,
 			panControlOptions: {
 		     position: google.maps.ControlPosition.LEFT_BOTTOM
 			},
@@ -26014,15 +26016,17 @@ var Header = React.createClass({displayName: "Header",
 	render: function() {
 		return (			
 			React.createElement("header", {className: "header"}, 
-				
-				React.createElement(Link, {to: "home"}, 
-					React.createElement("h1", null, "The New Instagrammm")
-				), 
+				React.createElement("div", {className: "header__wrap -flex"}, 
+					React.createElement("div", {className: "header--logo-container"}, 
+						React.createElement(Link, {to: "home"}, 
+							React.createElement("img", {className: "header--logo__img", src: "assets/img/logo.png", alt: "Instagrammm logo"})
+						)
+					), 
 
-				React.createElement("div", {className: "header__user"}, 
-					React.createElement("a", {onClick: this.signin}, "Log in")
+					React.createElement("div", {className: "header--user-container"}, 
+						React.createElement("a", {onClick: this.signin}, "Log in")
+					)
 				)
-
 			)
 		);
 	}
@@ -26044,7 +26048,7 @@ var HomePage = React.createClass({displayName: "HomePage",
 
 	render: function() {
 		return (
-			React.createElement("div", {className: "home--container"}, 
+			React.createElement("div", {className: "homepage--container"}, 
 				React.createElement(SearchBar, null)
 			)
 		);
@@ -26301,7 +26305,7 @@ var SearchBar = React.createClass({displayName: "SearchBar",
     				geocoder.geocode({'latLng': latlng}, function(results, status) {
       				if (status == google.maps.GeocoderStatus.OK) {
       					var city, state;
-      					
+      					// set the city and state based on the types from the component
       					for(var i in results[0].address_components){
       						var component = results[0].address_components[i];
       						
@@ -26336,14 +26340,9 @@ var SearchBar = React.createClass({displayName: "SearchBar",
 
 			// send off the search with searchData as the query
      		self.context.router.transitionTo('search', null, searchData);
-
 		};
 
-		// completeSearch();
-
 	},
-
-
 
 	render: function() {
 		return (
@@ -26361,31 +26360,6 @@ var SearchBar = React.createClass({displayName: "SearchBar",
 		);
 	}
 });
-
-/**
-*
-* 					
-					<label htmlFor="limit">Limit</label>
-					<input type="text" name="limit" ref="limit" />
-					
-					<label htmlFor="sort">Sort</label>
-					<label htmlFor="sort"> 0=Best matched (default), 1=Distance, 2=Highest Rated.</label>
-					<input type="text" name="sort" ref="sort" />
-					
-					<label htmlFor="category_filter">Category Filter</label>
-					<input type="text" name="category_filter" ref="category_filter" />
-					
-					<label htmlFor="radius_filter">Radius Filter</label>
-					<input type="text" name="radius_filter" ref="radius_filter" />
-					
-					<label htmlFor="latitude">Latitude</label>
-					<input type="text" name="latitude" ref="lat" />
-					
-					<label htmlFor="longitude">Longitude</label>
-					<input type="text" name="longitude" ref="lng" />
-*
-**/
-	
 
 module.exports = SearchBar;
 

@@ -1,0 +1,10 @@
+.homepage {}
+
+.homepage--container {
+	position: absolute;
+	background: url('img/bg.jpg');
+	left: 0;
+	width: 100%;
+	top: $headerHeight;
+	bottom: 0;
+}

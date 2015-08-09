@@ -2,12 +2,13 @@
 @import "compass/reset";
 
 @import "variables";
-@import "fonts";
-
 @import "common";
+
 @import "grid";
+@import "flex";
 
 @import "map";
 @import "header";
 @import "search";
 @import "place";
+@import "homepage";

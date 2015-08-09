@@ -44,15 +44,17 @@ var Header = React.createClass({
 	render: function() {
 		return (			
 			<header className="header">
-				
-				<Link to="home">
-					<h1>The New Instagrammm</h1>
-				</Link>
+				<div className="header__wrap -flex">
+					<div className="header--logo-container">
+						<Link to="home">
+							<img className="header--logo__img" src="assets/img/logo.png" alt="Instagrammm logo" />
+						</Link>
+					</div>
 
-				<div className="header__user">
-					<a onClick ={this.signin} >Log in</a>
+					<div className="header--user-container">
+						<a onClick ={this.signin} >Log in</a>
+					</div>
 				</div>
-
 			</header>
 		);
 	}

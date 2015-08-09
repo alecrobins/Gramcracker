@@ -30,7 +30,7 @@ var SearchBar = React.createClass({
     				geocoder.geocode({'latLng': latlng}, function(results, status) {
       				if (status == google.maps.GeocoderStatus.OK) {
       					var city, state;
-      					
+      					// set the city and state based on the types from the component
       					for(var i in results[0].address_components){
       						var component = results[0].address_components[i];
       						
@@ -65,14 +65,9 @@ var SearchBar = React.createClass({
 
 			// send off the search with searchData as the query
      		self.context.router.transitionTo('search', null, searchData);
-
 		};
 
-		// completeSearch();
-
 	},
-
-
 
 	render: function() {
 		return (
@@ -90,30 +85,5 @@ var SearchBar = React.createClass({
 		);
 	}
 });
-
-/**
-*
-* 					
-					<label htmlFor="limit">Limit</label>
-					<input type="text" name="limit" ref="limit" />
-					
-					<label htmlFor="sort">Sort</label>
-					<label htmlFor="sort"> 0=Best matched (default), 1=Distance, 2=Highest Rated.</label>
-					<input type="text" name="sort" ref="sort" />
-					
-					<label htmlFor="category_filter">Category Filter</label>
-					<input type="text" name="category_filter" ref="category_filter" />
-					
-					<label htmlFor="radius_filter">Radius Filter</label>
-					<input type="text" name="radius_filter" ref="radius_filter" />
-					
-					<label htmlFor="latitude">Latitude</label>
-					<input type="text" name="latitude" ref="lat" />
-					
-					<label htmlFor="longitude">Longitude</label>
-					<input type="text" name="longitude" ref="lng" />
-*
-**/
-	
 
 module.exports = SearchBar;
