@@ -55,18 +55,26 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   display: block;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-  text-decoration: none;
+/**
+*
+* Colors
+*
+**/
+html, html a {
+  -webkit-font-smoothing: antialiased !important;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
 }
 
-input {
-  border: solid 1px #ccc;
-}
-
+/**
+*
+* Grid system for the media layout
+*
+**/
+/**
+*
+* Google Map styling
+*
+**/
 .map-container {
   height: 400px;
 }

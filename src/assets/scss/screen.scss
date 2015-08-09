@@ -1,20 +1,13 @@
+@import "compass";
 @import "compass/reset";
 
 @import "variables";
 @import "fonts";
 
-* {
-	margin: 0;
-	padding: 0;
-	border: none;
-	outline: none;
-	text-decoration: none;
-}
+@import "common";
+@import "grid";
 
-input {
-	border: solid 1px #ccc;
-}
-
-.map-container {
-	height: 400px;
-}
+@import "map";
+@import "header";
+@import "search";
+@import "place";
