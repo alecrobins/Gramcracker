@@ -26209,6 +26209,7 @@ var React = require('react/addons');
 var PlacePhoto = require('./PlacePhoto');
 var router = require('../router');
 var uuid = require('node-uuid');
+var mixins = require('../util/mixins');
 
 var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 
@@ -26222,11 +26223,23 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 
   	componentDidMount: function(){
   		// set up the slider once component has been mounted
-  		$('.single-item').slick();
+  		$('.place-media--slider[data-place-name="' + this.props.placeData.name +'"]').slick();
   	},
 
 	render: function() {
 		var self = this;
+		var slider = [];
+		
+		// split up images into buckets with a max of 5 media items per bucket
+		if(this.props.placeData.media !== undefined){
+			mixins.each_slice(this.props.placeData.media, 5, function (mediaItem){
+				var section = [];
+				for(var i in mediaItem){
+					section.push(React.createElement(PlacePhoto, {key: uuid.v1(), mediaData: mediaItem[i]}))
+				};
+				slider.push(section);
+			});
+		}
 
 		return (			
 			React.createElement("div", {className: "place-container"}, 
@@ -26234,12 +26247,16 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 					React.createElement("h1", {onClick: this.goToPlace}, this.props.placeData.name)
 				), 
 
-				React.createElement("div", {className: "place-media"}, 
-				$.map(this.props.placeData.media, function(mediaItem) {
-		         return (
-		         	React.createElement(PlacePhoto, {key: uuid.v1(), mediaData: mediaItem})
-		         )
-		      })
+				React.createElement("div", {className: "place-media--slider", "data-place-name": this.props.placeData.name}, 
+					$.map(slider, function(section) {
+		         	return (
+		      	   	React.createElement("div", {className: "place-media--slider__section", key: uuid.v1()}, 
+		      	   		$.map(section, function(Item) {
+		      	   			return Item;
+		      	   		})
+		      	   	)
+		   	      )
+		 	     	})
 		      )
 
 			)
@@ -26249,7 +26266,7 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 
 module.exports = PlaceContainer;
 
-},{"../router":238,"./PlacePhoto":232,"node-uuid":7,"react/addons":48}],232:[function(require,module,exports){
+},{"../router":238,"../util/mixins":243,"./PlacePhoto":232,"node-uuid":7,"react/addons":48}],232:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26263,9 +26280,11 @@ var PlacePhoto = React.createClass({displayName: "PlacePhoto",
 	render: function() {
 		var mediaData = this.props.mediaData;
 
+		var picture=React.createElement("img", {src: mediaData.images.standard_resolution.url});
+
 		return (			
-			React.createElement("div", {className: "place-photo-container"}, 
-				React.createElement("img", {src: mediaData.images.standard_resolution.url})
+			React.createElement("div", {className: "place-media--slider__item"}, 
+				picture
 			)
 		);
 	}
@@ -26850,4 +26869,14 @@ AppDispatcher.register(function(payload) {
 
 module.exports = UserStore;
 
-},{"../constants/UserStoreConstants":236,"../dispatcher/AppDispatcher":237,"events":3,"object-assign":8}]},{},[225]);
+},{"../constants/UserStoreConstants":236,"../dispatcher/AppDispatcher":237,"events":3,"object-assign":8}],243:[function(require,module,exports){
+
+// split up an array into buckets with a max size of 'size'
+// per bucket 
+module.exports.each_slice = function (array, size, callback){
+  for (var i = 0, l = array.length; i < l; i += size){
+    callback.call(array, array.slice(i, i + size));
+  }
+};
+
+},{}]},{},[225]);

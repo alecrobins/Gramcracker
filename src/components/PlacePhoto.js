@@ -11,9 +11,11 @@ var PlacePhoto = React.createClass({
 	render: function() {
 		var mediaData = this.props.mediaData;
 
+		var picture=<img src={mediaData.images.standard_resolution.url} />;
+
 		return (			
-			<div className = "place-photo-container">
-				<img src={mediaData.images.standard_resolution.url} />
+			<div className = "place-media--slider__item">
+				{picture}
 			</div>
 		);
 	}
