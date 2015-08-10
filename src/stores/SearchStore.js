@@ -16,7 +16,17 @@ var _isLoaded = false;
 var _search = {
 
   setData: function(data) {
-    _searchData = $.extend({}, data.searchData[0]);;
+    // clear the previously cached search data
+    var newData = data.searchData[0];
+    // remove places that do not have any pictures 
+    for(var i in newData){
+
+      if(newData[i].media.length === 0){
+        delete newData[i];
+      }
+    }
+
+    _searchData = $.extend({}, newData);
   },
 
   setFetchingState: function(state){
@@ -79,7 +89,6 @@ var SearchStore = assign(EventEmitter.prototype, {
   },
   
   sendSearchCompleted: function(data){
-    // clear the previously cached search data
     _search.setData(data);
     _search.setFetchingState("idle");
   },

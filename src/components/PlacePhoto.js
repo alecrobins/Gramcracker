@@ -11,7 +11,7 @@ var PlacePhoto = React.createClass({
 	render: function() {
 		var mediaData = this.props.mediaData;
 
-		var picture=<img src={mediaData.images.standard_resolution.url} />;
+		var picture=<img data-lazy={mediaData.images.standard_resolution.url} />;
 
 		return (			
 			<div className = "place-media--slider__item">

@@ -1,0 +1,42 @@
+.place-media {}
+
+.place-wrap {
+	position: relative;
+	max-width: $maxPageWidth;
+	padding: 0 30px;
+	margin: 0 auto;
+}
+
+.place-container{
+	position: relative;
+	width: 100%;
+}
+
+.place-media--slider {}
+
+.place-media--slider__section {
+	@include display-flex(flex !important);
+	@include flex-wrap(wrap);
+	outline: none;
+	
+	div {
+		width: 33.33%;
+	}
+}
+
+.place-media--slider__item {
+	box-sizing: border-box;
+  	padding: 10px 10px 10px 10px;
+
+  	img {
+  		width: 100%;
+  	}
+}
+
+.place-information{
+	position: absolute;
+  	width: 33.3%;
+  	top: 30px;
+  	left: 0px;
+  	z-index: $z-layer2;
+}

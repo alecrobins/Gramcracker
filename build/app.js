@@ -25756,7 +25756,7 @@ var LoginActions = {
 
 module.exports = LoginActions;
 
-},{"../constants/UserStoreConstants":236,"../dispatcher/AppDispatcher":237}],222:[function(require,module,exports){
+},{"../constants/UserStoreConstants":237,"../dispatcher/AppDispatcher":238}],222:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var PlaceStoreConstants = require('../constants/SearchStoreConstants');
 
@@ -25773,7 +25773,7 @@ var PlaceActions = {
 
 module.exports = PlaceActions;
 
-},{"../constants/SearchStoreConstants":235,"../dispatcher/AppDispatcher":237}],223:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":236,"../dispatcher/AppDispatcher":238}],223:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var SearchStoreConstants = require('../constants/SearchStoreConstants');
 
@@ -25811,7 +25811,7 @@ var SearchActions = {
 
 module.exports = SearchActions;
 
-},{"../constants/SearchStoreConstants":235,"../dispatcher/AppDispatcher":237}],224:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":236,"../dispatcher/AppDispatcher":238}],224:[function(require,module,exports){
 var fs = require('fs');
 var SearchStoreConstants = require('../constants/SearchStoreConstants');
 var SearchActions = require('../actions/SearchActions');
@@ -25877,13 +25877,13 @@ AppDispatcher.register(function(payload) {
 
 module.exports = Api;
 
-},{"../actions/SearchActions":223,"../constants/SearchStoreConstants":235,"../dispatcher/AppDispatcher":237,"fs":1}],225:[function(require,module,exports){
+},{"../actions/SearchActions":223,"../constants/SearchStoreConstants":236,"../dispatcher/AppDispatcher":238,"fs":1}],225:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react/addons');
 var router = require('./router');
 var Api = require('./api/Api');
 
-},{"./api/Api":224,"./router":238,"react/addons":48}],226:[function(require,module,exports){
+},{"./api/Api":224,"./router":239,"react/addons":48}],226:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26115,7 +26115,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header;
 
-},{"../actions/LoginActions":221,"../stores/UserStore":242,"react-router":33,"react/addons":48}],229:[function(require,module,exports){
+},{"../actions/LoginActions":221,"../stores/UserStore":243,"react-router":33,"react/addons":48}],229:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26140,7 +26140,7 @@ var HomePage = React.createClass({displayName: "HomePage",
 
 module.exports = HomePage;
 
-},{"./SearchBar":234,"react/addons":48}],230:[function(require,module,exports){
+},{"./SearchBar":235,"react/addons":48}],230:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26202,11 +26202,12 @@ var Place = React.createClass({displayName: "Place",
 
 module.exports = Place;
 
-},{"../actions/PlaceActions":222,"../stores/PlaceStore":240,"./GoogleMap":227,"./PlaceContainer":231,"node-uuid":7,"react/addons":48}],231:[function(require,module,exports){
+},{"../actions/PlaceActions":222,"../stores/PlaceStore":241,"./GoogleMap":227,"./PlaceContainer":231,"node-uuid":7,"react/addons":48}],231:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
 var PlacePhoto = require('./PlacePhoto');
+var PlaceInformation = require('./PlaceInformation');
 var router = require('../router');
 var uuid = require('node-uuid');
 var mixins = require('../util/mixins');
@@ -26217,13 +26218,14 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
    	router: React.PropTypes.func.isRequired
   	},
 
-  	goToPlace: function(){
-     	this.context.router.transitionTo('place', {id: this.props.placeData.id}, null);
-  	},
-
   	componentDidMount: function(){
   		// set up the slider once component has been mounted
-  		$('.place-media--slider[data-place-name="' + this.props.placeData.name +'"]').slick();
+  		$('.place-media--slider[data-place-name="' + this.props.placeData.name +'"]').slick({
+  			 lazyLoad: 'ondemand',
+  			 dots: true,
+  			 fade: true,
+  			 cssEase: 'linear'
+  		});
   	},
 
 	render: function() {
@@ -26234,6 +26236,9 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 		if(this.props.placeData.media !== undefined){
 			mixins.each_slice(this.props.placeData.media, 5, function (mediaItem){
 				var section = [];
+				// make first image an empty filler
+				section.push(React.createElement("div", {className: "place-media--slider__item"}));
+				
 				for(var i in mediaItem){
 					section.push(React.createElement(PlacePhoto, {key: uuid.v1(), mediaData: mediaItem[i]}))
 				};
@@ -26243,9 +26248,8 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 
 		return (			
 			React.createElement("div", {className: "place-container"}, 
-				React.createElement("div", {className: "place-information"}, 
-					React.createElement("h1", {onClick: this.goToPlace}, this.props.placeData.name)
-				), 
+				
+				React.createElement(PlaceInformation, {key: uuid.v1(), placeData: this.props.placeData.place, rank: this.props.rank}), 
 
 				React.createElement("div", {className: "place-media--slider", "data-place-name": this.props.placeData.name}, 
 					$.map(slider, function(section) {
@@ -26266,7 +26270,66 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 
 module.exports = PlaceContainer;
 
-},{"../router":238,"../util/mixins":243,"./PlacePhoto":232,"node-uuid":7,"react/addons":48}],232:[function(require,module,exports){
+},{"../router":239,"../util/mixins":244,"./PlaceInformation":232,"./PlacePhoto":233,"node-uuid":7,"react/addons":48}],232:[function(require,module,exports){
+/** @jsx React.DOM */
+
+var React = require('react/addons');
+
+var PlaceInformation = React.createClass({displayName: "PlaceInformation",
+
+	contextTypes: {
+   	router: React.PropTypes.func
+  	},
+
+  	goToPlace: function(){
+     	this.context.router.transitionTo('place', {id: this.props.placeData.id}, null);
+  	},
+
+	render: function() {
+		var placeData = this.props.placeData;
+		var isOpen;
+
+		if(placeData.is_closed){
+			isOpen =
+				React.createElement("div", {className: "place-information__open is-closed"}, 
+					"Closed now"
+				)
+		}else{
+			isOpen =
+				React.createElement("div", {className: "place-information__open is-open"}, 
+					"Open now"
+				)
+		}
+
+		return (			
+			React.createElement("div", {className: "place-information"}, 
+				
+				React.createElement("h1", {onClick: this.goToPlace, className: "h1"}, this.props.rank, " ", placeData.name), 
+				
+				React.createElement("div", {className: "place-information__rating"}, 
+					React.createElement("img", {src: placeData.rating_img_url})
+				), 
+
+				isOpen, 
+
+				React.createElement("div", {className: "place-information__address"}, 
+					React.createElement("p", {class: "p p__detail"}, placeData.location.address[0]), 
+					React.createElement("p", {class: "p p__detail"}, placeData.location.city, ", ", placeData.location.state, " ", placeData.location.postal_code)
+				), 
+
+				React.createElement("div", {className: "place-information__phone"}, 
+					React.createElement("i", {class: "icon icon__green fa fa-phone"}), 
+					placeData.display_phone
+				)
+
+			)
+		);
+	}
+});
+
+module.exports = PlaceInformation;
+
+},{"react/addons":48}],233:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26280,7 +26343,7 @@ var PlacePhoto = React.createClass({displayName: "PlacePhoto",
 	render: function() {
 		var mediaData = this.props.mediaData;
 
-		var picture=React.createElement("img", {src: mediaData.images.standard_resolution.url});
+		var picture=React.createElement("img", {"data-lazy": mediaData.images.standard_resolution.url});
 
 		return (			
 			React.createElement("div", {className: "place-media--slider__item"}, 
@@ -26292,7 +26355,7 @@ var PlacePhoto = React.createClass({displayName: "PlacePhoto",
 
 module.exports = PlacePhoto;
 
-},{"react/addons":48}],233:[function(require,module,exports){
+},{"react/addons":48}],234:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26367,10 +26430,11 @@ var Search = React.createClass({displayName: "Search",
 		   React.createElement("div", {className: "places"}, 
 		  		React.createElement(GoogleMap, {placeData: this.state, type: "list"}), 
 		  		React.createElement(SearchBar, {isHome: false, queryParams: this.props.query}), 
-		  		React.createElement("div", {className: "results-container"}, 
+		  		React.createElement("div", {className: "place-wrap"}, 
 			  		Object.keys(this.state).map(function(i){
+			  			var rank = parseInt(i) + 1;
 			         return (
-			         	React.createElement(PlaceContainer, {key: uuid.v1(), placeData: self.state[i]})
+			         	React.createElement(PlaceContainer, {key: uuid.v1(), placeData: self.state[i], rank: rank})
 			         )
 			      })
 		  		)
@@ -26389,7 +26453,7 @@ var Search = React.createClass({displayName: "Search",
 
 module.exports = Search;
 
-},{"../actions/SearchActions":223,"../api/Api":224,"../router":238,"../stores/SearchStore":241,"./GoogleMap":227,"./PlaceContainer":231,"./SearchBar":234,"node-uuid":7,"react/addons":48}],234:[function(require,module,exports){
+},{"../actions/SearchActions":223,"../api/Api":224,"../router":239,"../stores/SearchStore":242,"./GoogleMap":227,"./PlaceContainer":231,"./SearchBar":235,"node-uuid":7,"react/addons":48}],235:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26501,7 +26565,7 @@ var SearchBar = React.createClass({displayName: "SearchBar",
 
 module.exports = SearchBar;
 
-},{"../actions/SearchActions":223,"../router":238,"react/addons":48}],235:[function(require,module,exports){
+},{"../actions/SearchActions":223,"../router":239,"react/addons":48}],236:[function(require,module,exports){
 var SearchStoreConstants = {
 	SEND_SEARCH: 'SEND_SEARCH',
 	SEND_SEARCH_COMPLETED: 'SEND_SEARCH_COMPLETED',
@@ -26512,7 +26576,7 @@ var SearchStoreConstants = {
 
 module.exports = SearchStoreConstants;
 
-},{}],236:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 var UserStoreConstants = {
 	SIGN_IN: 'SIGN_IN',
 	SIGN_OUT: 'SIGN_OUT'
@@ -26520,7 +26584,7 @@ var UserStoreConstants = {
 
 module.exports = UserStoreConstants;
 
-},{}],237:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var AppDispatcher = new Dispatcher();
 
@@ -26533,7 +26597,7 @@ AppDispatcher.handleAction = function(action) {
 
 module.exports = AppDispatcher;
 
-},{"flux":4}],238:[function(require,module,exports){
+},{"flux":4}],239:[function(require,module,exports){
 var routes = require('./routes'),
     Router = require('react-router');
 var React = require('react/addons');
@@ -26548,7 +26612,7 @@ if (typeof window !== 'undefined') {
   
 }
 
-},{"./routes":239,"react-router":33,"react/addons":48}],239:[function(require,module,exports){
+},{"./routes":240,"react-router":33,"react/addons":48}],240:[function(require,module,exports){
 var React = require('react/addons');
 var Router = require('react-router');
 var Route = Router.Route;
@@ -26570,7 +26634,7 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/App":226,"./components/HomePage":229,"./components/Place":230,"./components/Search":233,"react-router":33,"react/addons":48}],240:[function(require,module,exports){
+},{"./components/App":226,"./components/HomePage":229,"./components/Place":230,"./components/Search":234,"react-router":33,"react/addons":48}],241:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -26671,7 +26735,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = PlaceStore;
 
-},{"../constants/SearchStoreConstants":235,"../dispatcher/AppDispatcher":237,"../router":238,"./SearchStore":241,"events":3,"object-assign":8}],241:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":236,"../dispatcher/AppDispatcher":238,"../router":239,"./SearchStore":242,"events":3,"object-assign":8}],242:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -26690,7 +26754,17 @@ var _isLoaded = false;
 var _search = {
 
   setData: function(data) {
-    _searchData = $.extend({}, data.searchData[0]);;
+    // clear the previously cached search data
+    var newData = data.searchData[0];
+    // remove places that do not have any pictures 
+    for(var i in newData){
+
+      if(newData[i].media.length === 0){
+        delete newData[i];
+      }
+    }
+
+    _searchData = $.extend({}, newData);
   },
 
   setFetchingState: function(state){
@@ -26753,7 +26827,6 @@ var SearchStore = assign(EventEmitter.prototype, {
   },
   
   sendSearchCompleted: function(data){
-    // clear the previously cached search data
     _search.setData(data);
     _search.setFetchingState("idle");
   },
@@ -26800,7 +26873,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = SearchStore;
 
-},{"../constants/SearchStoreConstants":235,"../dispatcher/AppDispatcher":237,"../router":238,"events":3,"object-assign":8}],242:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":236,"../dispatcher/AppDispatcher":238,"../router":239,"events":3,"object-assign":8}],243:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
@@ -26869,7 +26942,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = UserStore;
 
-},{"../constants/UserStoreConstants":236,"../dispatcher/AppDispatcher":237,"events":3,"object-assign":8}],243:[function(require,module,exports){
+},{"../constants/UserStoreConstants":237,"../dispatcher/AppDispatcher":238,"events":3,"object-assign":8}],244:[function(require,module,exports){
 
 // split up an array into buckets with a max size of 'size'
 // per bucket 

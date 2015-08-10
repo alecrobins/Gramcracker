@@ -56,7 +56,22 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 
 /**
 *
+* Fixed width / heights
+*
+**/
+/**
+*
+* Break points
+*
+**/
+/**
+*
 * Colors
+*
+**/
+/**
+*
+* Z-layers
 *
 **/
 html, html a {
@@ -83,8 +98,16 @@ body {
   cursor: pointer;
 }
 
+.icon--search {
+  font-size: 20px;
+}
+
 .icon--white {
   color: white;
+}
+
+.icon--blue {
+  color: #115688;
 }
 
 .h1,
@@ -98,6 +121,7 @@ body {
 .h1 {
   color: #115688;
   font-size: 36px;
+  cursor: pointer;
 }
 
 .h3__blue {
@@ -213,6 +237,45 @@ body {
 
 .searchbar--location:after {
   content: "NEAR";
+}
+
+.place-wrap {
+  position: relative;
+  max-width: 960px;
+  padding: 0 30px;
+  margin: 0 auto;
+}
+
+.place-container {
+  position: relative;
+  width: 100%;
+}
+
+.place-media--slider__section {
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  outline: none;
+}
+.place-media--slider__section div {
+  width: 33.33%;
+}
+
+.place-media--slider__item {
+  box-sizing: border-box;
+  padding: 10px 10px 10px 10px;
+}
+.place-media--slider__item img {
+  width: 100%;
+}
+
+.place-information {
+  position: absolute;
+  width: 33.3%;
+  top: 30px;
+  left: 0px;
+  z-index: 20;
 }
 
 .homepage--wrap {

@@ -2,6 +2,7 @@
 
 var React = require('react/addons');
 var PlacePhoto = require('./PlacePhoto');
+var PlaceInformation = require('./PlaceInformation');
 var router = require('../router');
 var uuid = require('node-uuid');
 var mixins = require('../util/mixins');
@@ -12,13 +13,14 @@ var PlaceContainer = React.createClass({
    	router: React.PropTypes.func.isRequired
   	},
 
-  	goToPlace: function(){
-     	this.context.router.transitionTo('place', {id: this.props.placeData.id}, null);
-  	},
-
   	componentDidMount: function(){
   		// set up the slider once component has been mounted
-  		$('.place-media--slider[data-place-name="' + this.props.placeData.name +'"]').slick();
+  		$('.place-media--slider[data-place-name="' + this.props.placeData.name +'"]').slick({
+  			 lazyLoad: 'ondemand',
+  			 dots: true,
+  			 fade: true,
+  			 cssEase: 'linear'
+  		});
   	},
 
 	render: function() {
@@ -29,6 +31,9 @@ var PlaceContainer = React.createClass({
 		if(this.props.placeData.media !== undefined){
 			mixins.each_slice(this.props.placeData.media, 5, function (mediaItem){
 				var section = [];
+				// make first image an empty filler
+				section.push(<div className="place-media--slider__item"></div>);
+				
 				for(var i in mediaItem){
 					section.push(<PlacePhoto key={uuid.v1()} mediaData={mediaItem[i]} />)
 				};
@@ -38,9 +43,8 @@ var PlaceContainer = React.createClass({
 
 		return (			
 			<div className = "place-container">
-				<div className = "place-information">
-					<h1 onClick={this.goToPlace}>{this.props.placeData.name}</h1>
-				</div>
+				
+				<PlaceInformation key={uuid.v1()} placeData={this.props.placeData.place} rank={this.props.rank}/>
 
 				<div className = "place-media--slider" data-place-name={this.props.placeData.name}>
 					{$.map(slider, function(section) {

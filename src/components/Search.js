@@ -72,10 +72,11 @@ var Search = React.createClass({
 		   <div className = "places" >
 		  		<GoogleMap placeData = {this.state} type = {"list"} />
 		  		<SearchBar isHome = {false} queryParams = {this.props.query} />
-		  		<div className = "results-container">
+		  		<div className = "place-wrap">
 			  		{Object.keys(this.state).map(function(i){
+			  			var rank = parseInt(i) + 1;
 			         return (
-			         	<PlaceContainer key={uuid.v1()} placeData={self.state[i]} />
+			         	<PlaceContainer key={uuid.v1()} placeData={self.state[i]} rank={rank} />
 			         )
 			      })}
 		  		</div>
