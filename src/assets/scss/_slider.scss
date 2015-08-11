@@ -1,0 +1,37 @@
+/**
+*
+* Slick Slider styling
+* http://kenwheeler.github.io/slick/
+*
+**/
+
+.slick-dots {
+  @include display-flex;
+  @include justify-content(center);
+  margin-top: 10px;
+}
+
+.slick-dots li button {
+  font-size: 0;
+  line-height: 0;
+  display: block;
+  width: 3px;
+  height: 3px;
+  padding: 3px;
+  cursor: pointer;
+  border: 0;
+  outline: none;
+  background: #ccc;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.slick-dots li.slick-active button {
+  background: $blue;
+}
+
+.slider__arrow {
+  cursor: pointer;
+  font-size: 12px;
+  color: $blue;
+}

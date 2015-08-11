@@ -19,34 +19,36 @@ var PlaceInformation = React.createClass({
 		if(placeData.is_closed){
 			isOpen =
 				<div className="place-information__open is-closed">
-					Closed now
+					<h5 className="h5 h5__red">Closed now</h5>
 				</div>
 		}else{
 			isOpen =
 				<div className="place-information__open is-open">
-					Open now
+					<h5 className="h5 h5__green">Open now</h5>
 				</div>
 		}
 
 		return (			
 			<div className = "place-information">
 				
-				<h1 onClick={this.goToPlace} className="h1">{this.props.rank} {placeData.name}</h1>
+				<span className="place-information__ranking">{this.props.rank}</span>
+
+				<h1 onClick={this.goToPlace} className="h1 place-information__name">{placeData.name}</h1>
 				
 				<div className="place-information__rating">
-					<img src={placeData.rating_img_url} />
+					<img src={placeData.rating_img_url_large} />
 				</div>
 
 				{isOpen}
 
 				<div className="place-information__address">
-					<p class="p p__detail">{placeData.location.address[0]}</p>
-					<p class="p p__detail">{placeData.location.city}, {placeData.location.state} {placeData.location.postal_code}</p>
+					<p className="p p__detail">{placeData.location.address[0]}</p>
+					<p className="p p__detail">{placeData.location.city}, {placeData.location.state_code} {placeData.location.postal_code}</p>
 				</div>
 
 				<div className="place-information__phone">
-					<i class="icon icon__green fa fa-phone"></i>
-					{placeData.display_phone}
+					<i className="icon icon--phone icon--green fa fa-phone"></i>
+					{placeData.display_phone.substring(3, placeData.display_phone.length)}
 				</div>
 
 			</div>

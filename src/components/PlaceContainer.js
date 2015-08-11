@@ -14,12 +14,19 @@ var PlaceContainer = React.createClass({
   	},
 
   	componentDidMount: function(){
+  		var self = this;
   		// set up the slider once component has been mounted
   		$('.place-media--slider[data-place-name="' + this.props.placeData.name +'"]').slick({
   			 lazyLoad: 'ondemand',
   			 dots: true,
+  			 arrows: true,
   			 fade: true,
-  			 cssEase: 'linear'
+  			 infinite: false,
+  			 cssEase: 'linear',
+  			 prevArrow: '<span class="slick-prev"><i class="slider__arrow fa fa-chevron-left"></i></span>',
+  			 nextArrow: '<span class="slick-next"><i class="slider__arrow fa fa-chevron-right"></i></span>',
+  			 appendArrows: '.place-media--slider-nav[data-place-name="' + self.props.placeData.name +'"]',
+  			 appendDots: '.place-media--slider-nav[data-place-name="' + self.props.placeData.name +'"]'
   		});
   	},
 
@@ -57,6 +64,8 @@ var PlaceContainer = React.createClass({
 		   	      )
 		 	     	})}
 		      </div>
+		      
+		      <div className="place-media--slider-nav -flex -flex--center" data-place-name={this.props.placeData.name}></div>
 
 			</div>
 		);

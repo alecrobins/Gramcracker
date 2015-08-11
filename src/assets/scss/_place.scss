@@ -7,9 +7,18 @@
 	margin: 0 auto;
 }
 
+.place-information{
+	position: absolute;
+  	width: 33.3%;
+  	top: 10px;
+  	left: 0px;
+  	z-index: $z-layer2;
+}
+
 .place-container{
 	position: relative;
 	width: 100%;
+	margin-bottom: 40px;
 }
 
 .place-media--slider {}
@@ -33,10 +42,35 @@
   	}
 }
 
-.place-information{
+.place-information__open,
+.place-information__address,
+.place-information__name,
+.place-information__rating,
+ {
+	margin-bottom: 10px;
+}
+
+.place-information__rating{
+	line-height: 0px;
+	
+	img {
+		width: 100px;
+	}
+	
+}
+
+.place-information__ranking{
 	position: absolute;
-  	width: 33.3%;
-  	top: 30px;
-  	left: 0px;
-  	z-index: $z-layer2;
+	@include display-flex;
+	@include justify-content(center);
+	@include align-items(center);
+	background-color: $blue;
+	width: 25px;
+	height: 25px;
+	color: white;
+	font-size: 13px;
+	font-weight: 900;
+	border-radius: 50%;
+	left: -50px;
+	top: 5px;
 }

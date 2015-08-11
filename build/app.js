@@ -26219,12 +26219,19 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
   	},
 
   	componentDidMount: function(){
+  		var self = this;
   		// set up the slider once component has been mounted
   		$('.place-media--slider[data-place-name="' + this.props.placeData.name +'"]').slick({
   			 lazyLoad: 'ondemand',
   			 dots: true,
+  			 arrows: true,
   			 fade: true,
-  			 cssEase: 'linear'
+  			 infinite: false,
+  			 cssEase: 'linear',
+  			 prevArrow: '<span class="slick-prev"><i class="slider__arrow fa fa-chevron-left"></i></span>',
+  			 nextArrow: '<span class="slick-next"><i class="slider__arrow fa fa-chevron-right"></i></span>',
+  			 appendArrows: '.place-media--slider-nav[data-place-name="' + self.props.placeData.name +'"]',
+  			 appendDots: '.place-media--slider-nav[data-place-name="' + self.props.placeData.name +'"]'
   		});
   	},
 
@@ -26261,7 +26268,9 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 		      	   	)
 		   	      )
 		 	     	})
-		      )
+		      ), 
+		      
+		      React.createElement("div", {className: "place-media--slider-nav -flex -flex--center", "data-place-name": this.props.placeData.name})
 
 			)
 		);
@@ -26292,34 +26301,36 @@ var PlaceInformation = React.createClass({displayName: "PlaceInformation",
 		if(placeData.is_closed){
 			isOpen =
 				React.createElement("div", {className: "place-information__open is-closed"}, 
-					"Closed now"
+					React.createElement("h5", {className: "h5 h5__red"}, "Closed now")
 				)
 		}else{
 			isOpen =
 				React.createElement("div", {className: "place-information__open is-open"}, 
-					"Open now"
+					React.createElement("h5", {className: "h5 h5__green"}, "Open now")
 				)
 		}
 
 		return (			
 			React.createElement("div", {className: "place-information"}, 
 				
-				React.createElement("h1", {onClick: this.goToPlace, className: "h1"}, this.props.rank, " ", placeData.name), 
+				React.createElement("span", {className: "place-information__ranking"}, this.props.rank), 
+
+				React.createElement("h1", {onClick: this.goToPlace, className: "h1 place-information__name"}, placeData.name), 
 				
 				React.createElement("div", {className: "place-information__rating"}, 
-					React.createElement("img", {src: placeData.rating_img_url})
+					React.createElement("img", {src: placeData.rating_img_url_large})
 				), 
 
 				isOpen, 
 
 				React.createElement("div", {className: "place-information__address"}, 
-					React.createElement("p", {class: "p p__detail"}, placeData.location.address[0]), 
-					React.createElement("p", {class: "p p__detail"}, placeData.location.city, ", ", placeData.location.state, " ", placeData.location.postal_code)
+					React.createElement("p", {className: "p p__detail"}, placeData.location.address[0]), 
+					React.createElement("p", {className: "p p__detail"}, placeData.location.city, ", ", placeData.location.state_code, " ", placeData.location.postal_code)
 				), 
 
 				React.createElement("div", {className: "place-information__phone"}, 
-					React.createElement("i", {class: "icon icon__green fa fa-phone"}), 
-					placeData.display_phone
+					React.createElement("i", {className: "icon icon--phone icon--green fa fa-phone"}), 
+					placeData.display_phone.substring(3, placeData.display_phone.length)
 				)
 
 			)

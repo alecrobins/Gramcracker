@@ -110,18 +110,34 @@ body {
   color: #115688;
 }
 
+.icon--green {
+  color: #10b242;
+}
+
+.icon--phone {
+  -moz-transform: rotate(17deg);
+  -ms-transform: rotate(17deg);
+  -webkit-transform: rotate(17deg);
+  transform: rotate(17deg);
+  margin-right: 5px;
+}
+
 .h1,
 .h2,
-.h3,
+.h3 {
+  font-weight: 700;
+}
+
 .h4,
 .h5 {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .h1 {
   color: #115688;
   font-size: 36px;
   cursor: pointer;
+  letter-spacing: -1px;
 }
 
 .h3__blue {
@@ -129,6 +145,24 @@ body {
   font-size: 22px;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.h5 {
+  font-size: 14px;
+}
+
+.h5__green {
+  color: #10b242;
+}
+
+.h5__red {
+  color: #c3022f;
+}
+
+.p__detail {
+  font-size: 12px;
+  color: #6c6c6c;
+  line-height: 16px;
 }
 
 .-flex {
@@ -182,6 +216,45 @@ body {
 
 .header--user-container {
   margin-left: auto;
+}
+
+/**
+*
+* Slick Slider styling
+* http://kenwheeler.github.io/slick/
+*
+**/
+.slick-dots {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.slick-dots li button {
+  font-size: 0;
+  line-height: 0;
+  display: block;
+  width: 3px;
+  height: 3px;
+  padding: 3px;
+  cursor: pointer;
+  border: 0;
+  outline: none;
+  background: #ccc;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.slick-dots li.slick-active button {
+  background: #115688;
+}
+
+.slider__arrow {
+  cursor: pointer;
+  font-size: 12px;
+  color: #115688;
 }
 
 .searchbar {
@@ -246,9 +319,18 @@ body {
   margin: 0 auto;
 }
 
+.place-information {
+  position: absolute;
+  width: 33.3%;
+  top: 10px;
+  left: 0px;
+  z-index: 20;
+}
+
 .place-container {
   position: relative;
   width: 100%;
+  margin-bottom: 40px;
 }
 
 .place-media--slider__section {
@@ -270,12 +352,37 @@ body {
   width: 100%;
 }
 
-.place-information {
+.place-information__open,
+.place-information__address,
+.place-information__name,
+.place-information__rating {
+  margin-bottom: 10px;
+}
+
+.place-information__rating {
+  line-height: 0px;
+}
+.place-information__rating img {
+  width: 100px;
+}
+
+.place-information__ranking {
   position: absolute;
-  width: 33.3%;
-  top: 30px;
-  left: 0px;
-  z-index: 20;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+  background-color: #115688;
+  width: 25px;
+  height: 25px;
+  color: white;
+  font-size: 13px;
+  font-weight: 900;
+  border-radius: 50%;
+  left: -50px;
+  top: 5px;
 }
 
 .homepage--wrap {

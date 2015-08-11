@@ -13,3 +13,12 @@
 .icon--blue {
 	color: $blue;
 }
+
+.icon--green{
+	color: $green;
+}
+
+.icon--phone{
+	@include transform(rotate(17deg));
+	margin-right: 5px;
+}
