@@ -8,13 +8,16 @@ var PlacePhoto = React.createClass({
    	router: React.PropTypes.func
   	},
 
+  	handlePhotoClick: function(e){
+  		this.props.handlePhotoClick(e.target);
+  	},
+
 	render: function() {
 		var mediaData = this.props.mediaData;
-
 		var picture=<img data-lazy={mediaData.images.standard_resolution.url} />;
 
 		return (			
-			<div className = "place-media--slider__item">
+			<div className = "place-media--slider__item" onClick={this.handlePhotoClick}>
 				{picture}
 			</div>
 		);

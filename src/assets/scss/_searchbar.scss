@@ -1,12 +1,45 @@
 .searchbar {
+	max-width: $maxPageWidth;
+	@include align-items(center);
+	margin: 0 auto;
+}
+
+.searchbar--wrap{
+	position: relative;
+	width: 100%;
+	background: white;
+	margin-bottom: 20px;
+}
+
+.searchbar.is-home {
 	@include align-items(center);
 	@include justify-content(center);
 	width: 100%;
+	
+	.searchbar--icon {
+		color: white;
+		font-size: 30px;
+		margin-left: 0;
+	}
+
+	.searchbar--input-container{
+		width: 40%;
+	}
+
+	.searchbar--input{
+		font-size: 18px;
+	}
+}
+
+.searchbar--icon {
+	color: $blue;
+	font-size: 22px;
+	margin-left: auto;
 }
 
 .searchbar--input-container {
 	position: relative;
-	width: 40%;
+	width: 33.3%;
 }
 
 .searchbar--input {
@@ -18,8 +51,9 @@
 	@include border-radius(5px);
 	border: none;
 	background: white;
-	font-size: 18px;
+	font-size: 16px;
 	outline: none;
+	color: $dark-grey;
 }
 
 #input-after {
@@ -41,6 +75,14 @@
 	padding-left: 85px;
 }
 
+.searchbar--filter input {
+	padding-left: 130px;
+}
+
+.searchbar--filter:after {
+	@extend #input-after;
+	content: "FILTER BY";
+}
 .searchbar--term:after {
 	@extend #input-after;
 	content: "FIND";

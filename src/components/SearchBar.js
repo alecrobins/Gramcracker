@@ -2,6 +2,7 @@
 
 var React = require('react/addons');
 var SearchActions = require('../actions/SearchActions');
+var SearchSuggestions = require("./SearchSuggestions");
 var router = require('../router');
 
 var SearchBar = React.createClass({
@@ -23,6 +24,21 @@ var SearchBar = React.createClass({
    	if(e.keyCode === 13){
    		this.handleSubmit(e);
    	}
+
+      // TODO: implement suggetions
+      // var data = {
+      //    prefix: "new"
+      // }
+
+      // $.ajax({
+      //    url: '/api/search_suggest',
+      //    type: 'GET'
+      // }).done(function(data){
+      //    var bodyData = JSON.parse(data[0].replace(/.*?;{/, "{"));
+      //    var body = bodyData.body.replace(/(\r\n|\n|\r)/gm,"").replace(/class=/g, 'className=');;
+      // }).fail(function(){
+      //    console.log("FAIL");
+      // });
    },
 
 	handleSubmit: function(e){
@@ -31,9 +47,13 @@ var SearchBar = React.createClass({
 
 		var searchData = {
 			term: React.findDOMNode(this.refs.term).value.trim(),
-			location: React.findDOMNode(this.refs.location).value.trim(),
+         location: React.findDOMNode(this.refs.location).value.trim(),
 		};
 
+      // TODO: need to convert enum (0, 1, 2)
+      if(!this.props.isHome){
+         searchData.filterBy = React.findDOMNode(this.filterBy.location).value.trim();
+      }
 
 		var completeSearch = function(){
 			// delete the null
@@ -89,20 +109,37 @@ var SearchBar = React.createClass({
 	},
 
 	render: function() {
+      var searchClass = this.props.isHome ? "searchbar -flex is-home" : "searchbar -flex";
+      var filterBy = "";
+      var searchWrap = "";
+
+      if(!this.props.isHome){
+         filterBy = 
+            <div className="searchbar--filter searchbar--input-container">
+               <input className="searchbar--input" type="text" name="filterBy" ref="filterBy" />
+            </div>;
+
+         searchWrap = "searchbar--wrap";
+      }
+
 		return (
-			<div className = "searchbar -flex">
-				
-				<div className="searchbar--term searchbar--input-container">
-					<input className="searchbar--input" type="text" name="term" ref="term" />
-				</div>
+         <div className = {searchWrap} >
+   			<div className = {searchClass}>
+   				
+   				<div className="searchbar--term searchbar--input-container">
+   					<input className="searchbar--input" type="text" name="term" ref="term" />
+   				</div>
 
-				<div className="searchbar--location searchbar--input-container">
-					<input className="searchbar--input" type="text" name="location" ref="location" />	
-				</div>
-				
-				<i className="searchbar--icon icon icon--white fa  fa-search fa-2x" onClick={this.handleSubmit}></i>
+   				<div className="searchbar--location searchbar--input-container">
+   					<input className="searchbar--input" type="text" name="location" ref="location" />
+   				</div>
+   				
+               {filterBy}
 
-			</div>
+   				<i className="searchbar--icon icon fa fa-search fa-2x" onClick={this.handleSubmit}></i>
+
+   			</div>
+         </div>
 		);
 	}
 });

@@ -1,14 +1,18 @@
 /** @jsx React.DOM */
 
 var React = require('react/addons');
+var uuid = require('node-uuid');
+var router = require('../router');
+
 var SearchActions = require('../actions/SearchActions');
 var SearchStore = require('../stores/SearchStore');
 var Api = require('../api/Api');
+
+// components
 var SearchBar = require('./SearchBar');
 var PlaceContainer = require('./PlaceContainer');
 var GoogleMap = require('./GoogleMap');
-var uuid = require('node-uuid');
-var router = require('../router');
+var MediaSlider = require('./MediaSlider');
 
 var Search = React.createClass({
 	
@@ -63,6 +67,7 @@ var Search = React.createClass({
 
 		var display;
 		var self = this;
+		
 		if (SearchStore.getFetchingState() === "fetching") {
 		  
 		  display = <h1>Loading</h1>;

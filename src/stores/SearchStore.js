@@ -9,6 +9,9 @@ var router = require('../router');
 // Internal object of our object
 var _searchData = {};
 var _fetchingState = "idle";
+var _termSuggestions = "";
+var _locationSuggestions = "";
+
 // flag to determine is a search has been fired off yet
 var _isLoaded = false;
 
@@ -27,6 +30,14 @@ var _search = {
     }
 
     _searchData = $.extend({}, newData);
+  },
+
+  setTermSuggestions: function(suggestion){
+    _termSuggestions = sug;
+  },
+
+  setLocationSuggestions: function(suggestion){
+    _termSuggestions = sug;
   },
 
   setFetchingState: function(state){

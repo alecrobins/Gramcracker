@@ -199,7 +199,7 @@ body {
   position: relative;
   max-width: 960px;
   margin: 0 auto;
-  padding: 20px 30px;
+  padding: 20px 0px;
   box-sizing: border-box;
 }
 
@@ -258,16 +258,47 @@ body {
 }
 
 .searchbar {
+  max-width: 960px;
+  -webkit-align-items: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.searchbar--wrap {
+  position: relative;
+  width: 100%;
+  background: white;
+  margin-bottom: 20px;
+}
+
+.searchbar.is-home {
   -webkit-align-items: center;
   align-items: center;
   -webkit-justify-content: center;
   justify-content: center;
   width: 100%;
 }
+.searchbar.is-home .searchbar--icon {
+  color: white;
+  font-size: 30px;
+  margin-left: 0;
+}
+.searchbar.is-home .searchbar--input-container {
+  width: 40%;
+}
+.searchbar.is-home .searchbar--input {
+  font-size: 18px;
+}
+
+.searchbar--icon {
+  color: #115688;
+  font-size: 22px;
+  margin-left: auto;
+}
 
 .searchbar--input-container {
   position: relative;
-  width: 40%;
+  width: 33.3%;
 }
 
 .searchbar--input {
@@ -281,11 +312,12 @@ body {
   border-radius: 5px;
   border: none;
   background: white;
-  font-size: 18px;
+  font-size: 16px;
   outline: none;
+  color: #404040;
 }
 
-#input-after, .searchbar--term:after, .searchbar--location:after {
+#input-after, .searchbar--filter:after, .searchbar--term:after, .searchbar--location:after {
   position: absolute;
   display: block;
   left: 15px;
@@ -302,6 +334,14 @@ body {
 
 .searchbar--location input {
   padding-left: 85px;
+}
+
+.searchbar--filter input {
+  padding-left: 130px;
+}
+
+.searchbar--filter:after {
+  content: "FILTER BY";
 }
 
 .searchbar--term:after {

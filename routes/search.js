@@ -2,6 +2,7 @@
 var async = require('async');
 var instagramhelper = require('../modules/instagramhelper');
 var util = require('../modules/util');
+var request = require('request');
 
 module.exports.home = function(req, res, next){
 	res.render('search', { title: 'Gramcracker' });
@@ -43,3 +44,44 @@ module.exports.search = function(req, res, next) {
 		});
 };
 
+module.exports.search_suggest = function(req, res, next){
+
+	async.series([
+			function(cb){
+				var query = encodeURIComponent(req.body);
+				request('http://www.yelp.com/search_suggest/bucketed?prefix&loc=New+York%2C+NY', function (error, response, body) {
+				  if (!error && response.statusCode == 200) {
+				    cb(null, body);
+				  }else{
+				  		console.log(error);
+				  }
+				})
+			}
+		],
+		function(err, results){
+			res.json(results);
+		});
+
+};
+
+module.exports.location_suggest = function(req, res, next){
+//http://www.yelp.com/search_suggest/bucketed?prefix&loc=New+York%2C+NY
+	
+	async.series([
+			function(cb){
+				request('http://www.yelp.com/search_suggest/bucketed?prefix&loc=New+York%2C+NY', function (error, response, body) {
+				  if (!error && response.statusCode == 200) {
+				    console.log("BODY");
+				    console.log(body);
+				    cb(null, body);
+				  }else{
+				  		console.log(error);
+				  }
+				})
+			}
+		],
+		function(err, results){
+			res.json(results);
+		});
+
+};

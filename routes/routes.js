@@ -7,7 +7,7 @@ var _place = require('./place');
 module.exports = function(app){
 
 	// PAGE ROUTES
-	app.get("/*", _index.home);
+	app.get("/", _index.home);
 
 	// INSTAGRAM SIGN IN
 	app.get("/api/callback", _signin.callback);
@@ -15,6 +15,8 @@ module.exports = function(app){
 
 	// SEARCH
 	app.post("/api/search", _search.search);
+	app.get("/api/search_suggest", _search.search_suggest);
+	app.get("/api/location_suggest", _search.location_suggest);
 
 	// PLACE SEARCH
 	app.post("/api/place", _place.place);

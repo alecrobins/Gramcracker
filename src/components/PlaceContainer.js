@@ -30,6 +30,10 @@ var PlaceContainer = React.createClass({
   		});
   	},
 
+  	handlePhotoClick: function(target){
+  		
+  	},
+
 	render: function() {
 		var self = this;
 		var slider = [];
@@ -42,7 +46,8 @@ var PlaceContainer = React.createClass({
 				section.push(<div className="place-media--slider__item"></div>);
 				
 				for(var i in mediaItem){
-					section.push(<PlacePhoto key={uuid.v1()} mediaData={mediaItem[i]} />)
+					section.push(<PlacePhoto key={uuid.v1()} mediaData={mediaItem[i]} 
+						handlePhotoClick={self.handlePhotoClick} />)
 				};
 				slider.push(section);
 			});

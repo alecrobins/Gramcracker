@@ -13,7 +13,7 @@ var HomePage = React.createClass({
 		return (
 			<div className="homepage--wrap">
 				<div className = "homepage--container -flex">
-					<SearchBar />
+					<SearchBar isHome={true} />
 				</div>
 			</div>
 		);
