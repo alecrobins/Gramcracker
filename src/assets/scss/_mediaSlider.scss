@@ -1,0 +1,26 @@
+/**
+*
+* This is the slider that pops up 
+*
+* Slick Slider styling
+* http://kenwheeler.github.io/slick/
+*
+**/
+
+.media-slider--wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+/* Horizontally and Vertically center */
+.media-slider--container {
+   @include display-flex;
+   @include justify-content(center);
+	@include align-items(center);
+   height: 100%;
+}

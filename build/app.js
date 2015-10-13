@@ -26183,12 +26183,16 @@ var MediaSlider = React.createClass({displayName: "MediaSlider",
 		var currentImage = this.props.data[this.props.currentIndex];
 		
 		if(this.props.display){
+			
+			var picture=React.createElement("img", {src: currentImage.images.standard_resolution.url});
+
 			display = 
 				React.createElement("div", {className: "media-slider--wrap"}, 
 					React.createElement("div", {className: "media-slider--container"}, 
-						currentImage.link
+						picture
 					)
 				)
+
 		}else{
 			display = React.createElement("div", null)
 		}
@@ -26517,10 +26521,7 @@ var Search = React.createClass({displayName: "Search",
 		var display;
 		var self = this;
 		var mediaSliderData = SearchStore.getMediaSliderData();
-
-		console.log("Search.js - test");
-		console.log(mediaSliderData);
-		
+				
 		if (SearchStore.getFetchingState() === "fetching") {
 		  
 		  display = React.createElement("h1", null, "Loading");

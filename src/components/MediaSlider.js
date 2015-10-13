@@ -16,14 +16,17 @@ var MediaSlider = React.createClass({
 		var display;
 		var currentImage = this.props.data[this.props.currentIndex];
 		
-		
 		if(this.props.display){
+			
+			var picture=<img src={currentImage.images.standard_resolution.url} />;
+
 			display = 
 				<div className="media-slider--wrap">
 					<div className="media-slider--container">
-						{currentImage.link}
+						{picture}
 					</div>
 				</div>
+
 		}else{
 			display = <div></div>
 		}
