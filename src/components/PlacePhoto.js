@@ -9,7 +9,7 @@ var PlacePhoto = React.createClass({
   	},
 
   	handlePhotoClick: function(e){
-  		this.props.handlePhotoClick(e.target);
+  		this.props.handlePhotoClick(e.target, this.props.index);
   	},
 
 	render: function() {

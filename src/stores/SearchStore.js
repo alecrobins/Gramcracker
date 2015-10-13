@@ -4,6 +4,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var SearchStoreConstants = require('../constants/SearchStoreConstants');
+var UIConstants = require('../constants/UIConstants');
 var router = require('../router');
 
 // Internal object of our object
@@ -14,6 +15,12 @@ var _locationSuggestions = "";
 
 // flag to determine is a search has been fired off yet
 var _isLoaded = false;
+
+// media slider data
+var _mediaSliderData = {
+  data: [],
+  display: false
+};
 
 // Method to load shoes from action data
 var _search = {
@@ -82,6 +89,23 @@ var SearchStore = assign(EventEmitter.prototype, {
     return _search.getFetchingState();
   },
 
+  getMediaSliderData: function(){
+    return _mediaSliderData;
+  },
+
+  openSlider: function(data){
+    console.log("OPEN SLIDER");
+    console.log(data);
+    _mediaSliderData.display = true;
+    debugger;
+  },
+
+  closeSlider: function(){
+    console.log("CLOSE SLIDER");
+    _mediaSliderData.display = false;
+    debugger;
+  },
+
   // Returns all place
   getPlace: function(placeID) {
     return _search.getPlace(placeID);
@@ -131,6 +155,15 @@ AppDispatcher.register(function(payload) {
 
     case SearchStoreConstants.SEND_SEARCH_COMPLETED:
       SearchStore.sendSearchCompleted(action);
+      break;
+
+    case UIConstants.OPEN_SLIDER:
+      console.log("Opnening the slider in the search store");
+      SearchStore.openSlider(action);
+      break;
+
+    case UIConstants.CLOSE_SLIDER:
+      SearchStore.closeSlider();
       break;
 
     default:

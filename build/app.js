@@ -25756,7 +25756,7 @@ var LoginActions = {
 
 module.exports = LoginActions;
 
-},{"../constants/UserStoreConstants":239,"../dispatcher/AppDispatcher":240}],222:[function(require,module,exports){
+},{"../constants/UserStoreConstants":241,"../dispatcher/AppDispatcher":242}],222:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var PlaceStoreConstants = require('../constants/SearchStoreConstants');
 
@@ -25773,7 +25773,7 @@ var PlaceActions = {
 
 module.exports = PlaceActions;
 
-},{"../constants/SearchStoreConstants":238,"../dispatcher/AppDispatcher":240}],223:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":239,"../dispatcher/AppDispatcher":242}],223:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var SearchStoreConstants = require('../constants/SearchStoreConstants');
 
@@ -25811,7 +25811,32 @@ var SearchActions = {
 
 module.exports = SearchActions;
 
-},{"../constants/SearchStoreConstants":238,"../dispatcher/AppDispatcher":240}],224:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":239,"../dispatcher/AppDispatcher":242}],224:[function(require,module,exports){
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var UIConstants = require('../constants/UIConstants');
+
+var UIActions = {
+
+  	openSlider: function(_mediaData, _currentIndex) {
+      console.log("OPENING SLIDER ACTION");
+    	AppDispatcher.handleAction({
+      	actionType: UIConstants.OPEN_SLIDER,
+      	mediaData: _mediaData,
+      	currentIndex: _currentIndex
+    	});
+  	},
+
+  	closeSlider: function() {
+    	AppDispatcher.handleAction({
+      	actionType: UIConstants.CLOSE_SLIDER,
+    	});
+  	}
+
+};
+
+module.exports = UIActions;
+
+},{"../constants/UIConstants":240,"../dispatcher/AppDispatcher":242}],225:[function(require,module,exports){
 var fs = require('fs');
 var SearchStoreConstants = require('../constants/SearchStoreConstants');
 var SearchActions = require('../actions/SearchActions');
@@ -25826,8 +25851,6 @@ var Api = {
       location: data.searchQuery.location,
       term: data.searchQuery.term
     }
-
-    console.log(searchData);
 
     setTimeout(
       function(){
@@ -25877,13 +25900,13 @@ AppDispatcher.register(function(payload) {
 
 module.exports = Api;
 
-},{"../actions/SearchActions":223,"../constants/SearchStoreConstants":238,"../dispatcher/AppDispatcher":240,"fs":1}],225:[function(require,module,exports){
+},{"../actions/SearchActions":223,"../constants/SearchStoreConstants":239,"../dispatcher/AppDispatcher":242,"fs":1}],226:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react/addons');
 var router = require('./router');
 var Api = require('./api/Api');
 
-},{"./api/Api":224,"./router":241,"react/addons":48}],226:[function(require,module,exports){
+},{"./api/Api":225,"./router":243,"react/addons":48}],227:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -25921,7 +25944,7 @@ module.exports = App;
 //     );
 // }
 
-},{"./Header":228,"./HomePage":229,"react-router":33,"react/addons":48}],227:[function(require,module,exports){
+},{"./Header":229,"./HomePage":230,"react-router":33,"react/addons":48}],228:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26050,7 +26073,7 @@ var GoogleMap = React.createClass({displayName: "GoogleMap",
 
 module.exports = GoogleMap;
 
-},{"node-uuid":7,"react/addons":48}],228:[function(require,module,exports){
+},{"node-uuid":7,"react/addons":48}],229:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26115,7 +26138,7 @@ var Header = React.createClass({displayName: "Header",
 
 module.exports = Header;
 
-},{"../actions/LoginActions":221,"../stores/UserStore":245,"react-router":33,"react/addons":48}],229:[function(require,module,exports){
+},{"../actions/LoginActions":221,"../stores/UserStore":247,"react-router":33,"react/addons":48}],230:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26140,7 +26163,7 @@ var HomePage = React.createClass({displayName: "HomePage",
 
 module.exports = HomePage;
 
-},{"./SearchBar":236,"react/addons":48}],230:[function(require,module,exports){
+},{"./SearchBar":237,"react/addons":48}],231:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26153,7 +26176,7 @@ var MediaSlider = React.createClass({displayName: "MediaSlider",
 
 	render: function() {
 		var display;
-
+		
 		if(this.props.display){
 			display = 
 				React.createElement("div", {className: "media-slider--wrap"}, 
@@ -26163,7 +26186,7 @@ var MediaSlider = React.createClass({displayName: "MediaSlider",
 					)
 				)
 		}else{
-			display = React.createElement("div", null)
+			display = React.createElement("div", null, "~~Hidden~~")
 		}
 
 		return (		
@@ -26176,7 +26199,7 @@ var MediaSlider = React.createClass({displayName: "MediaSlider",
 
 module.exports = MediaSlider;
 
-},{"react/addons":48}],231:[function(require,module,exports){
+},{"react/addons":48}],232:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26238,12 +26261,13 @@ var Place = React.createClass({displayName: "Place",
 
 module.exports = Place;
 
-},{"../actions/PlaceActions":222,"../stores/PlaceStore":243,"./GoogleMap":227,"./PlaceContainer":232,"node-uuid":7,"react/addons":48}],232:[function(require,module,exports){
+},{"../actions/PlaceActions":222,"../stores/PlaceStore":245,"./GoogleMap":228,"./PlaceContainer":233,"node-uuid":7,"react/addons":48}],233:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
 var PlacePhoto = require('./PlacePhoto');
 var PlaceInformation = require('./PlaceInformation');
+var UIActions = require('../actions/UIActions');
 var router = require('../router');
 var uuid = require('node-uuid');
 var mixins = require('../util/mixins');
@@ -26271,8 +26295,9 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
   		});
   	},
 
-  	handlePhotoClick: function(target){
-  		
+  	handlePhotoClick: function(target, index){
+  		console.log("photo clicked");
+  		UIActions.openSlider(this.props.placeData.media, index);
   	},
 
 	render: function() {
@@ -26287,13 +26312,16 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 				section.push(React.createElement("div", {className: "place-media--slider__item"}));
 				
 				for(var i in mediaItem){
+					var index = self.props.placeData.media.indexOf(mediaItem[i]);
+					
 					section.push(React.createElement(PlacePhoto, {key: uuid.v1(), mediaData: mediaItem[i], 
-						handlePhotoClick: self.handlePhotoClick}))
+						handlePhotoClick: self.handlePhotoClick, index: index}));
 				};
+
 				slider.push(section);
 			});
 		}
-
+		
 		return (			
 			React.createElement("div", {className: "place-container"}, 
 				
@@ -26320,7 +26348,7 @@ var PlaceContainer = React.createClass({displayName: "PlaceContainer",
 
 module.exports = PlaceContainer;
 
-},{"../router":241,"../util/mixins":246,"./PlaceInformation":233,"./PlacePhoto":234,"node-uuid":7,"react/addons":48}],233:[function(require,module,exports){
+},{"../actions/UIActions":224,"../router":243,"../util/mixins":248,"./PlaceInformation":234,"./PlacePhoto":235,"node-uuid":7,"react/addons":48}],234:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26338,7 +26366,7 @@ var PlaceInformation = React.createClass({displayName: "PlaceInformation",
 	render: function() {
 		var placeData = this.props.placeData;
 		var isOpen;
-
+		
 		if(placeData.is_closed){
 			isOpen =
 				React.createElement("div", {className: "place-information__open is-closed"}, 
@@ -26371,7 +26399,9 @@ var PlaceInformation = React.createClass({displayName: "PlaceInformation",
 
 				React.createElement("div", {className: "place-information__phone"}, 
 					React.createElement("i", {className: "icon icon--phone icon--green fa fa-phone"}), 
-					placeData.display_phone.substring(3, placeData.display_phone.length)
+					React.createElement("p", {className: "p p__detail p__inline"}, 
+						placeData.display_phone.substring(3, placeData.display_phone.length)
+					)
 				)
 
 			)
@@ -26381,7 +26411,7 @@ var PlaceInformation = React.createClass({displayName: "PlaceInformation",
 
 module.exports = PlaceInformation;
 
-},{"react/addons":48}],234:[function(require,module,exports){
+},{"react/addons":48}],235:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26393,7 +26423,7 @@ var PlacePhoto = React.createClass({displayName: "PlacePhoto",
   	},
 
   	handlePhotoClick: function(e){
-  		this.props.handlePhotoClick(e.target);
+  		this.props.handlePhotoClick(e.target, this.props.index);
   	},
 
 	render: function() {
@@ -26410,7 +26440,7 @@ var PlacePhoto = React.createClass({displayName: "PlacePhoto",
 
 module.exports = PlacePhoto;
 
-},{"react/addons":48}],235:[function(require,module,exports){
+},{"react/addons":48}],236:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26474,12 +26504,15 @@ var Search = React.createClass({displayName: "Search",
 		this.setState(SearchStore.returnData());
 	},
 
+	// TODO: need to send an event once the media slider has been activated
+
 	// Render the component
 	render: function(){
 		window.testSearchStore = SearchStore;
 
 		var display;
 		var self = this;
+		var mediaSliderData = SearchStore.getMediaSliderData();
 		
 		if (SearchStore.getFetchingState() === "fetching") {
 		  
@@ -26501,10 +26534,11 @@ var Search = React.createClass({displayName: "Search",
 		  	)
 		  	;
 		}
- 	
+ 		
 	 	return (
 	 		React.createElement("div", null, 
-		   	display
+		   	display, 
+		   	React.createElement(MediaSlider, {display: mediaSliderData.display, data: mediaSliderData.data})
 	   	)
 		);
 	}
@@ -26513,7 +26547,7 @@ var Search = React.createClass({displayName: "Search",
 
 module.exports = Search;
 
-},{"../actions/SearchActions":223,"../api/Api":224,"../router":241,"../stores/SearchStore":244,"./GoogleMap":227,"./MediaSlider":230,"./PlaceContainer":232,"./SearchBar":236,"node-uuid":7,"react/addons":48}],236:[function(require,module,exports){
+},{"../actions/SearchActions":223,"../api/Api":225,"../router":243,"../stores/SearchStore":246,"./GoogleMap":228,"./MediaSlider":231,"./PlaceContainer":233,"./SearchBar":237,"node-uuid":7,"react/addons":48}],237:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26662,7 +26696,7 @@ var SearchBar = React.createClass({displayName: "SearchBar",
 
 module.exports = SearchBar;
 
-},{"../actions/SearchActions":223,"../router":241,"./SearchSuggestions":237,"react/addons":48}],237:[function(require,module,exports){
+},{"../actions/SearchActions":223,"../router":243,"./SearchSuggestions":238,"react/addons":48}],238:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var React = require('react/addons');
@@ -26683,7 +26717,7 @@ var SearchSuggestions = React.createClass({displayName: "SearchSuggestions",
 
 module.exports = SearchSuggestions;
 
-},{"react/addons":48}],238:[function(require,module,exports){
+},{"react/addons":48}],239:[function(require,module,exports){
 var SearchStoreConstants = {
 	SEND_SEARCH: 'SEND_SEARCH',
 	SEND_SEARCH_COMPLETED: 'SEND_SEARCH_COMPLETED',
@@ -26694,7 +26728,15 @@ var SearchStoreConstants = {
 
 module.exports = SearchStoreConstants;
 
-},{}],239:[function(require,module,exports){
+},{}],240:[function(require,module,exports){
+var UIConstants = {
+	OPEN_SLIDER: 'OPEN_SLIDER',
+	CLOSE_SLIDER: 'CLOSE_SLIDER',
+};
+
+module.exports = UIConstants;
+
+},{}],241:[function(require,module,exports){
 var UserStoreConstants = {
 	SIGN_IN: 'SIGN_IN',
 	SIGN_OUT: 'SIGN_OUT'
@@ -26702,7 +26744,7 @@ var UserStoreConstants = {
 
 module.exports = UserStoreConstants;
 
-},{}],240:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 var AppDispatcher = new Dispatcher();
 
@@ -26715,7 +26757,7 @@ AppDispatcher.handleAction = function(action) {
 
 module.exports = AppDispatcher;
 
-},{"flux":4}],241:[function(require,module,exports){
+},{"flux":4}],243:[function(require,module,exports){
 var routes = require('./routes'),
     Router = require('react-router');
 var React = require('react/addons');
@@ -26730,7 +26772,7 @@ if (typeof window !== 'undefined') {
   
 }
 
-},{"./routes":242,"react-router":33,"react/addons":48}],242:[function(require,module,exports){
+},{"./routes":244,"react-router":33,"react/addons":48}],244:[function(require,module,exports){
 var React = require('react/addons');
 var Router = require('react-router');
 var Route = Router.Route;
@@ -26752,7 +26794,7 @@ var routes = (
 
 module.exports = routes;
 
-},{"./components/App":226,"./components/HomePage":229,"./components/Place":231,"./components/Search":235,"react-router":33,"react/addons":48}],243:[function(require,module,exports){
+},{"./components/App":227,"./components/HomePage":230,"./components/Place":232,"./components/Search":236,"react-router":33,"react/addons":48}],245:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
@@ -26853,13 +26895,14 @@ AppDispatcher.register(function(payload) {
 
 module.exports = PlaceStore;
 
-},{"../constants/SearchStoreConstants":238,"../dispatcher/AppDispatcher":240,"../router":241,"./SearchStore":244,"events":3,"object-assign":8}],244:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":239,"../dispatcher/AppDispatcher":242,"../router":243,"./SearchStore":246,"events":3,"object-assign":8}],246:[function(require,module,exports){
 /** @jsx React.DOM */
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var SearchStoreConstants = require('../constants/SearchStoreConstants');
+var UIConstants = require('../constants/UIConstants');
 var router = require('../router');
 
 // Internal object of our object
@@ -26870,6 +26913,12 @@ var _locationSuggestions = "";
 
 // flag to determine is a search has been fired off yet
 var _isLoaded = false;
+
+// media slider data
+var _mediaSliderData = {
+  data: [],
+  display: false
+};
 
 // Method to load shoes from action data
 var _search = {
@@ -26938,6 +26987,23 @@ var SearchStore = assign(EventEmitter.prototype, {
     return _search.getFetchingState();
   },
 
+  getMediaSliderData: function(){
+    return _mediaSliderData;
+  },
+
+  openSlider: function(data){
+    console.log("OPEN SLIDER");
+    console.log(data);
+    _mediaSliderData.display = true;
+    debugger;
+  },
+
+  closeSlider: function(){
+    console.log("CLOSE SLIDER");
+    _mediaSliderData.display = false;
+    debugger;
+  },
+
   // Returns all place
   getPlace: function(placeID) {
     return _search.getPlace(placeID);
@@ -26989,6 +27055,15 @@ AppDispatcher.register(function(payload) {
       SearchStore.sendSearchCompleted(action);
       break;
 
+    case UIConstants.OPEN_SLIDER:
+      console.log("Opnening the slider in the search store");
+      SearchStore.openSlider(action);
+      break;
+
+    case UIConstants.CLOSE_SLIDER:
+      SearchStore.closeSlider();
+      break;
+
     default:
       return true;
   }
@@ -27002,7 +27077,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = SearchStore;
 
-},{"../constants/SearchStoreConstants":238,"../dispatcher/AppDispatcher":240,"../router":241,"events":3,"object-assign":8}],245:[function(require,module,exports){
+},{"../constants/SearchStoreConstants":239,"../constants/UIConstants":240,"../dispatcher/AppDispatcher":242,"../router":243,"events":3,"object-assign":8}],247:[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
@@ -27071,7 +27146,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = UserStore;
 
-},{"../constants/UserStoreConstants":239,"../dispatcher/AppDispatcher":240,"events":3,"object-assign":8}],246:[function(require,module,exports){
+},{"../constants/UserStoreConstants":241,"../dispatcher/AppDispatcher":242,"events":3,"object-assign":8}],248:[function(require,module,exports){
 
 // split up an array into buckets with a max size of 'size'
 // per bucket 
@@ -27081,4 +27156,4 @@ module.exports.each_slice = function (array, size, callback){
   }
 };
 
-},{}]},{},[225]);
+},{}]},{},[226]);

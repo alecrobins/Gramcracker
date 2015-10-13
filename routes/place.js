@@ -16,14 +16,18 @@ module.exports.place = function(req, res, next){
 	async.series([
 		function(cb){
 			yelp.business(placeID, function(error, placeData) {
-				var placeCoords = placeData.location.coordinate;
-				var instaCallback = instagramhelper.createInstagramCallback(placeData, placeData.id,
+				if(placeData.location != undefined){
+					var placeCoords = placeData.location.coordinate;
+					var instaCallback = instagramhelper.createInstagramCallback(placeData, placeData.id,
 							 placeData.name, placeCoords.latitude, placeCoords.longitude);
 				
-				async.series([instaCallback],
-					function(err, results){
-						cb(null, results);
-					});
+					async.series([instaCallback],
+						function(err, results){
+							cb(null, results);
+						});
+				}else{
+					cb(null, null); // return null
+				}
 			});
 		}],
 		function(err, results){

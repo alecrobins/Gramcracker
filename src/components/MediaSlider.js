@@ -10,7 +10,7 @@ var MediaSlider = React.createClass({
 
 	render: function() {
 		var display;
-
+		
 		if(this.props.display){
 			display = 
 				<div className="media-slider--wrap">
@@ -20,7 +20,7 @@ var MediaSlider = React.createClass({
 					</div>
 				</div>
 		}else{
-			display = <div></div>
+			display = <div>~~Hidden~~</div>
 		}
 
 		return (		

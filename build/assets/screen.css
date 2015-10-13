@@ -165,6 +165,10 @@ body {
   line-height: 16px;
 }
 
+.p__inline {
+  display: inline-block;
+}
+
 .-flex {
   display: -webkit-flex;
   display: flex;

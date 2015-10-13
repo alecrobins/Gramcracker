@@ -15,7 +15,7 @@ var PlaceInformation = React.createClass({
 	render: function() {
 		var placeData = this.props.placeData;
 		var isOpen;
-
+		
 		if(placeData.is_closed){
 			isOpen =
 				<div className="place-information__open is-closed">
@@ -48,7 +48,9 @@ var PlaceInformation = React.createClass({
 
 				<div className="place-information__phone">
 					<i className="icon icon--phone icon--green fa fa-phone"></i>
-					{placeData.display_phone.substring(3, placeData.display_phone.length)}
+					<p className="p p__detail p__inline">
+						{placeData.display_phone.substring(3, placeData.display_phone.length)}
+					</p>
 				</div>
 
 			</div>

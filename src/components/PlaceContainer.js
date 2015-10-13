@@ -3,6 +3,7 @@
 var React = require('react/addons');
 var PlacePhoto = require('./PlacePhoto');
 var PlaceInformation = require('./PlaceInformation');
+var UIActions = require('../actions/UIActions');
 var router = require('../router');
 var uuid = require('node-uuid');
 var mixins = require('../util/mixins');
@@ -30,8 +31,9 @@ var PlaceContainer = React.createClass({
   		});
   	},
 
-  	handlePhotoClick: function(target){
-  		
+  	handlePhotoClick: function(target, index){
+  		console.log("photo clicked");
+  		UIActions.openSlider(this.props.placeData.media, index);
   	},
 
 	render: function() {
@@ -46,13 +48,16 @@ var PlaceContainer = React.createClass({
 				section.push(<div className="place-media--slider__item"></div>);
 				
 				for(var i in mediaItem){
+					var index = self.props.placeData.media.indexOf(mediaItem[i]);
+					
 					section.push(<PlacePhoto key={uuid.v1()} mediaData={mediaItem[i]} 
-						handlePhotoClick={self.handlePhotoClick} />)
+						handlePhotoClick={self.handlePhotoClick} index={index} />);
 				};
+
 				slider.push(section);
 			});
 		}
-
+		
 		return (			
 			<div className = "place-container">
 				

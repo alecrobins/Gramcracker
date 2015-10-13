@@ -13,8 +13,6 @@ var Api = {
       term: data.searchQuery.term
     }
 
-    console.log(searchData);
-
     setTimeout(
       function(){
         SearchActions.receiveSearchData(testData);        

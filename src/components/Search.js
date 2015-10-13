@@ -61,12 +61,15 @@ var Search = React.createClass({
 		this.setState(SearchStore.returnData());
 	},
 
+	// TODO: need to send an event once the media slider has been activated
+
 	// Render the component
 	render: function(){
 		window.testSearchStore = SearchStore;
 
 		var display;
 		var self = this;
+		var mediaSliderData = SearchStore.getMediaSliderData();
 		
 		if (SearchStore.getFetchingState() === "fetching") {
 		  
@@ -88,10 +91,11 @@ var Search = React.createClass({
 		  	</div>
 		  	;
 		}
- 	
+ 		
 	 	return (
 	 		<div>
 		   	{display}
+		   	<MediaSlider display={mediaSliderData.display} data={mediaSliderData.data} />
 	   	</div>
 		);
 	}
