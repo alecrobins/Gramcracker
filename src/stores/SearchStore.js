@@ -19,7 +19,8 @@ var _isLoaded = false;
 // media slider data
 var _mediaSliderData = {
   data: [],
-  display: false
+  display: false,
+  currentIndex: null
 };
 
 // Method to load shoes from action data
@@ -95,15 +96,16 @@ var SearchStore = assign(EventEmitter.prototype, {
 
   openSlider: function(data){
     console.log("OPEN SLIDER");
-    console.log(data);
+    _mediaSliderData.data = data.mediaData;
     _mediaSliderData.display = true;
-    debugger;
+    _mediaSliderData.currentIndex = data.currentIndex;
   },
 
   closeSlider: function(){
     console.log("CLOSE SLIDER");
+    _mediaSliderData.data = [];
     _mediaSliderData.display = false;
-    debugger;
+    _mediaSliderData.currentIndex = null;
   },
 
   // Returns all place
@@ -158,7 +160,6 @@ AppDispatcher.register(function(payload) {
       break;
 
     case UIConstants.OPEN_SLIDER:
-      console.log("Opnening the slider in the search store");
       SearchStore.openSlider(action);
       break;
 

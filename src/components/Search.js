@@ -70,6 +70,9 @@ var Search = React.createClass({
 		var display;
 		var self = this;
 		var mediaSliderData = SearchStore.getMediaSliderData();
+
+		console.log("Search.js - test");
+		console.log(mediaSliderData);
 		
 		if (SearchStore.getFetchingState() === "fetching") {
 		  
@@ -95,7 +98,7 @@ var Search = React.createClass({
 	 	return (
 	 		<div>
 		   	{display}
-		   	<MediaSlider display={mediaSliderData.display} data={mediaSliderData.data} />
+		   	<MediaSlider display={mediaSliderData.display} data={mediaSliderData.data} currentIndex={mediaSliderData.currentIndex} />
 	   	</div>
 		);
 	}

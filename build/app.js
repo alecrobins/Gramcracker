@@ -26174,19 +26174,23 @@ var MediaSlider = React.createClass({displayName: "MediaSlider",
    	router: React.PropTypes.func
   	},
 
+  	componentWillMount: function(){
+
+	},
+
 	render: function() {
 		var display;
+		var currentImage = this.props.data[this.props.currentIndex];
 		
 		if(this.props.display){
 			display = 
 				React.createElement("div", {className: "media-slider--wrap"}, 
 					React.createElement("div", {className: "media-slider--container"}, 
-						React.createElement("h1", null, "Media from the slider will go here "), 
-						React.createElement("h2", null, "Create a new slick slider with each media slider photo ")
+						currentImage.link
 					)
 				)
 		}else{
-			display = React.createElement("div", null, "~~Hidden~~")
+			display = React.createElement("div", null)
 		}
 
 		return (		
@@ -26513,6 +26517,9 @@ var Search = React.createClass({displayName: "Search",
 		var display;
 		var self = this;
 		var mediaSliderData = SearchStore.getMediaSliderData();
+
+		console.log("Search.js - test");
+		console.log(mediaSliderData);
 		
 		if (SearchStore.getFetchingState() === "fetching") {
 		  
@@ -26538,7 +26545,7 @@ var Search = React.createClass({displayName: "Search",
 	 	return (
 	 		React.createElement("div", null, 
 		   	display, 
-		   	React.createElement(MediaSlider, {display: mediaSliderData.display, data: mediaSliderData.data})
+		   	React.createElement(MediaSlider, {display: mediaSliderData.display, data: mediaSliderData.data, currentIndex: mediaSliderData.currentIndex})
 	   	)
 		);
 	}
@@ -26917,7 +26924,8 @@ var _isLoaded = false;
 // media slider data
 var _mediaSliderData = {
   data: [],
-  display: false
+  display: false,
+  currentIndex: null
 };
 
 // Method to load shoes from action data
@@ -26993,15 +27001,16 @@ var SearchStore = assign(EventEmitter.prototype, {
 
   openSlider: function(data){
     console.log("OPEN SLIDER");
-    console.log(data);
+    _mediaSliderData.data = data.mediaData;
     _mediaSliderData.display = true;
-    debugger;
+    _mediaSliderData.currentIndex = data.currentIndex;
   },
 
   closeSlider: function(){
     console.log("CLOSE SLIDER");
+    _mediaSliderData.data = [];
     _mediaSliderData.display = false;
-    debugger;
+    _mediaSliderData.currentIndex = null;
   },
 
   // Returns all place
@@ -27056,7 +27065,6 @@ AppDispatcher.register(function(payload) {
       break;
 
     case UIConstants.OPEN_SLIDER:
-      console.log("Opnening the slider in the search store");
       SearchStore.openSlider(action);
       break;
 
